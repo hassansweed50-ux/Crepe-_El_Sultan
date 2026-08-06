@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>كريب السلطان | Crepe El Sultan</title>
+  <style>
+    :root {
+      --red: #d92d27;
+      --orange: #ff8a18;
+      --cream: #fff7e9;
+      --dark: #261510;
+      --green: #228b55;
+      --shadow: 0 14px 35px rgba(44, 20, 10, .13);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Tahoma, Arial, sans-serif;
+      color: var(--dark);
+      background: var(--cream);
+      min-height: 100vh;
+    }
+
+    button, input, textarea, select { font: inherit; }
+    button { cursor: pointer; border: 0; }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      min-height: 280px;
+      padding: 28px 6% 38px;
+      background:
+        radial-gradient(circle at 8% 20%, rgba(255, 206, 71, .5) 0 5%, transparent 5.5%),
+        radial-gradient(circle at 92% 78%, rgba(255, 190, 64, .35) 0 7%, transparent 7.5%),
+        linear-gradient(135deg, #a8171d, #df3e22 58%, #ff8917);
+      color: white;
+    }
+
+    .hero::before,
+    .hero::after {
+      position: absolute;
+      opacity: .16;
+      font-size: 130px;
+      z-index: 0;
+    }
+
+    .hero::before {
+      content: "🍔";
+      left: 8%;
+      bottom: -35px;
+      transform: rotate(-18deg);
+    }
+
+    .hero::after {
+      content: "🍕";
+      right: 6%;
+      top: -35px;
+      transform: rotate(17deg);
+    }
+
+    .topbar, .welcome {
+      position: relative;
+      z-index: 1;
+      max-width: 1180px;
+      margin: auto;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      font-weight: bold;
+      font-size: 1.15rem;
+    }
+
+    .brand-mark {
+      background: #fff;
+      color: var(--red);
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      font-size: 24px;
+      box-shadow: 0 5px 15px rgba(0,0,0,.18);
+    }
+
+    .cart-toggle {
+      padding: 11px 16px;
+      border-radius: 999px;
+      color: var(--dark);
+      background: white;
+      font-weight: bold;
+      box-shadow: 0 4px 13px rgba(0,0,0,.17);
+    }
+
+    .cart-count {
+      display: inline-grid;
+      place-items: center;
+      min-width: 21px;
+      height: 21px;
+      border-radius: 50%;
+      margin-right: 5px;
+      background: var(--red);
+      color: white;
+      font-size: .75rem;
+    }
+
+    .welcome {
+      text-align: center;
+      margin-top: 53px;
+    }
+
+    .welcome h1 {
+      margin: 0;
+      font-size: clamp(2rem, 5vw, 3.7rem);
+      text-shadow: 0 3px 1px rgba(0,0,0,.15);
+    }
+
+    .welcome p {
+      font-size: 1.08rem;
+      margin: 14px 0 0;
+      opacity: .95;
+    }
+
+    .restaurant-info {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 9px;
+      max-width: 950px;
+      margin: 20px auto 0;
+    }
+
+    .restaurant-info span {
+      padding: 8px 13px;
+      border: 1px solid rgba(255,255,255,.35);
+      border-radius: 999px;
+      background: rgba(255,255,255,.14);
+      font-size: .88rem;
+      font-weight: bold;
+    }
+
+    main {
+      max-width: 1180px;
+      margin: -20px auto 0;
+      padding: 0 18px 55px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .categories {
+      width: min(700px, 100%);
+      margin: 0 auto 34px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        "crepe burger"
+        "pizza pizza";
+      gap: 12px;
+    }
+
+    .category {
+      min-height: 57px;
+      padding: 12px 20px;
+      background: white;
+      color: var(--dark);
+      border-radius: 15px;
+      font-size: 1rem;
+      font-weight: bold;
+      box-shadow: var(--shadow);
+      transition: .2s;
+    }
+
+    .category:hover, .category.active {
+      color: white;
+      background: var(--red);
+      transform: translateY(-2px);
+    }
+
+    .category[data-category="crepe"] { grid-area: crepe; }
+    .category[data-category="burger"] { grid-area: burger; }
+    .category[data-category="pizza"] {
+      grid-area: pizza;
+      width: 50%;
+      justify-self: center;
+    }
+
+    .section-heading {
+      margin: 8px 0 20px;
+      text-align: center;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      color: var(--red);
+      font-size: 1.8rem;
+    }
+
+    .section-heading p {
+      color: #765c50;
+      margin: 8px 0 0;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+      gap: 20px;
+    }
+
+    .food-card {
+      overflow: hidden;
+      background: white;
+      border-radius: 19px;
+      box-shadow: var(--shadow);
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .food-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 19px 37px rgba(44, 20, 10, .18);
+    }
+
+    .food-image {
+      height: 155px;
+      display: grid;
+      place-items: center;
+      font-size: 72px;
+      background: linear-gradient(135deg, #fff1cb, #ffc563);
+      position: relative;
+    }
+
+    .food-image::after {
+      content: "كريب السلطان";
+      position: absolute;
+      bottom: 9px;
+      right: 11px;
+      background: rgba(95, 38, 15, .73);
+      border-radius: 99px;
+      padding: 4px 9px;
+      color: white;
+      font-size: .7rem;
+    }
+
+    .food-content { padding: 16px; }
+
+    .food-content h3 {
+      margin: 0 0 8px;
+      font-size: 1.12rem;
+    }
+
+    .food-content p {
+      min-height: 44px;
+      color: #735f56;
+      line-height: 1.6;
+      font-size: .9rem;
+      margin: 0 0 14px;
+    }
+
+    .card-footer {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .price {
+      color: var(--red);
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .add-btn {
+      padding: 9px 12px;
+      border-radius: 9px;
+      color: white;
+      background: var(--green);
+      font-size: .86rem;
+      font-weight: bold;
+    }
+
+    .add-btn:hover { background: #176f43; }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(27, 12, 7, .48);
+      opacity: 0;
+      visibility: hidden;
+      transition: .25s;
+      z-index: 20;
+    }
+
+    .overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .cart-sidebar {
+      position: fixed;
+      z-index: 30;
+      top: 0;
+      right: 0;
+      width: min(420px, 92vw);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 22px;
+      background: white;
+      box-shadow: -12px 0 32px rgba(0,0,0,.18);
+      transform: translateX(110%);
+      transition: transform .28s ease;
+    }
+
+    .cart-sidebar.open { transform: translateX(0); }
+
+    .cart-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 17px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .cart-header h2 {
+      margin: 0;
+      color: var(--red);
+    }
+
+    .close-btn {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      background: #f3ece8;
+      color: var(--dark);
+      font-size: 1.4rem;
+    }
+
+    .cart-items {
+      overflow-y: auto;
+      flex: 1;
+      padding: 13px 0;
+    }
+
+    .empty-cart {
+      text-align: center;
+      color: #806c62;
+      margin-top: 55px;
+      line-height: 1.8;
+    }
+
+    .cart-item {
+      display: grid;
+      grid-template-columns: 43px 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .cart-item-icon {
+      display: grid;
+      place-items: center;
+      width: 43px;
+      height: 43px;
+      border-radius: 10px;
+      background: #fff0cf;
+      font-size: 25px;
+    }
+
+    .cart-item h4 {
+      margin: 0 0 5px;
+      font-size: .94rem;
+    }
+
+    .cart-item small {
+      color: var(--red);
+      font-weight: bold;
+    }
+
+    .quantity {
+      display: flex;
+      direction: ltr;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .quantity button {
+      width: 26px;
+      height: 26px;
+      border-radius: 7px;
+      background: #f1e6df;
+      color: var(--red);
+      font-weight: bold;
+    }
+
+    .cart-footer {
+      padding-top: 17px;
+      border-top: 1px solid #eee;
+    }
+
+    .total {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.15rem;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .checkout-btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      background: var(--red);
+      color: white;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+
+    .checkout-btn:disabled {
+      background: #c6b9b3;
+      cursor: not-allowed;
+    }
+
+    .modal {
+      position: fixed;
+      z-index: 40;
+      top: 50%;
+      left: 50%;
+      width: min(500px, calc(100% - 30px));
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 27px;
+      border-radius: 21px;
+      background: white;
+      transform: translate(-50%, -46%) scale(.94);
+      opacity: 0;
+      visibility: hidden;
+      transition: .22s;
+      box-shadow: 0 20px 55px rgba(0,0,0,.25);
+    }
+
+    .modal.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .modal h2 {
+      color: var(--red);
+      margin: 0 0 7px;
+      text-align: center;
+    }
+
+    .modal-intro {
+      color: #765f55;
+      text-align: center;
+      margin: 0 0 20px;
+    }
+
+    label {
+      display: block;
+      margin: 13px 0 6px;
+      font-size: .92rem;
+      font-weight: bold;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #dfd0c9;
+      outline: none;
+      border-radius: 9px;
+      background: #fffdfb;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--orange);
+      box-shadow: 0 0 0 3px rgba(255,138,24,.15);
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .submit-order {
+      width: 100%;
+      padding: 13px;
+      margin-top: 21px;
+      border-radius: 10px;
+      background: var(--green);
+      color: white;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+
+    .success-modal { text-align: center; }
+
+    .success-icon {
+      display: grid;
+      place-items: center;
+      width: 74px;
+      height: 74px;
+      margin: 0 auto 16px;
+      border-radius: 50%;
+      background: #dff6e8;
+      color: var(--green);
+      font-size: 39px;
+    }
+
+    .success-modal p {
+      line-height: 1.8;
+      color: #66554d;
+    }
+
+    .success-modal button {
+      padding: 11px 27px;
+      margin-top: 10px;
+      border-radius: 9px;
+      background: var(--red);
+      color: white;
+      font-weight: bold;
+    }
+
+    @media (max-width: 520px) {
+      .hero {
+        min-height: 245px;
+        padding: 18px 17px 33px;
+      }
+
+      .welcome { margin-top: 37px; }
+      .brand { font-size: .95rem; }
+      .brand-mark { width: 37px; height: 37px; }
+      .cart-toggle { padding: 9px 11px; font-size: .85rem; }
+      .category[data-category="pizza"] { width: 70%; }
+      .food-image { height: 135px; }
+
+      .restaurant-info {
+        gap: 7px;
+      }
+
+      .restaurant-info span {
+        width: 100%;
+        border-radius: 10px;
+        font-size: .8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="topbar">
+      <div class="brand">
+        <span class="brand-mark">♛</span>
+        <span>كريب السلطان</span>
+      </div>
+
+      <button class="cart-toggle" id="cartToggle">
+        السلة <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+
+    <div class="welcome">
+      <h1>أهلاً بكم في كريب السلطان</h1>
+      <p>أشهى الوجبات المحضّرة خصيصاً من أجلكم</p>
+
+      <div class="restaurant-info">
+        <span>🛵 خدمة التوصيل متاحة</span>
+        <span>📍 الشرقية / مركز أبو حماد / كفر عياد / منزل العمدة</span>
+        <span>📞 01008136174 - 01204857565</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <nav class="categories" aria-label="أقسام الطعام">
+      <button class="category active" data-category="crepe">🌯 كريب</button>
+      <button class="category" data-category="burger">🍔 برجر</button>
+      <button class="category" data-category="pizza">🍕 بيتزا</button>
+    </nav>
+
+    <section class="section-heading">
+      <h2 id="categoryTitle">كريب السلطان</h2>
+      <p id="categoryDescription">اختار نوع وحجم الكريب المناسب لك</p>
+    </section>
+
+    <section class="menu-grid" id="menuGrid"></section>
+  </main>
+
+  <div class="overlay" id="overlay"></div>
+
+  <aside class="cart-sidebar" id="cartSidebar" aria-label="سلة الطلبات">
+    <div class="cart-header">
+      <h2>سلة الطلبات</h2>
+      <button class="close-btn" id="closeCart" aria-label="إغلاق">×</button>
+    </div>
+
+    <div class="cart-items" id="cartItems"></div>
+
+    <div class="cart-footer">
+      <div class="total">
+        <span>الإجمالي</span>
+        <span id="cartTotal">0 جنيه</span>
+      </div>
+      <button class="checkout-btn" id="checkoutBtn" disabled>إتمام الطلب</button>
+    </div>
+  </aside>
+
+  <div class="modal" id="checkoutModal">
+    <button class="close-btn" id="closeCheckout" style="position:absolute; top:14px; left:14px">×</button>
+    <h2>بيانات التوصيل</h2>
+    <p class="modal-intro">أكمل بياناتك وسنتواصل معك لتأكيد الطلب</p>
+
+    <form id="orderForm">
+      <label for="fullName">الاسم بالكامل</label>
+      <input id="fullName" type="text" placeholder="اكتب اسمك بالكامل" required>
+
+      <label for="phone">رقم الهاتف</label>
+      <input id="phone" type="tel" inputmode="tel" placeholder="مثال: 01XXXXXXXXX" required>
+
+      <label for="address">عنوان التوصيل</label>
+      <textarea id="address" placeholder="المنطقة، الشارع، رقم العقار..." required></textarea>
+
+      <label for="payment">طريقة الدفع</label>
+      <select id="payment" required>
+        <option value="" selected disabled>اختر طريقة الدفع</option>
+        <option>الدفع عند الاستلام</option>
+      </select>
+
+      <button class="submit-order" type="submit">تأكيد الطلب</button>
+    </form>
+  </div>
+
+  <div class="modal success-modal" id="successModal">
+    <div class="success-icon">✓</div>
+    <h2>تم استلام طلبك بنجاح!</h2>
+    <p>شكراً لاختيارك كريب السلطان.<br>سيتواصل فريق التوصيل معك قريباً لتأكيد الطلب.</p>
+    <button id="successClose">حسناً</button>
+  </div>
+
+  <script>
+    const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbxuP0T-AgKMxY4EaogZfod0IENHYF2tEJdr5dAtX7ZwazsMcCSe9ng0ELBwfxWFr4aO/exec";
+
+    const menu = {
+      crepe: {
+        title: "كريب السلطان",
+        description: "اختار نوع وحجم الكريب المناسب لك",
+        items:
+         [
+          
+          { id: "c1", name: "كريب استربس - صغير", description: "صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 70, icon: "🌯" },
+          { id: "c2", name: "كريب استربس - وسط", description: "صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 90, icon: "🌯" },
+          { id: "c3", name: "كريب استربس - كبير", description: "صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 150, icon: "🌯" },
+          { id: "c4", name: "كريب استربس - VIP", description: "صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 250, icon: "🌯" },
+
+          { id: "c5", name: "كريب بانيه - صغير", description: "شرائح فراخ متبلة، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 40, icon: "🌯" },
+          { id: "c6", name: "كريب بانيه - وسط", description: "شرائح فراخ متبلة، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 60, icon: "🌯" },
+          { id: "c7", name: "كريب بانيه - كبير", description: "شرائح فراخ متبلة، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 80, icon: "🌯" },
+          { id: "c8", name: "كريب بانيه - VIP", description: "شرائح فراخ متبلة، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 200, icon: "🌯" },
+
+          { id: "c9", name: "كريب شيش - صغير", description: "قطع صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 100, icon: "🌯" },
+          { id: "c10", name: "كريب شيش - وسط", description: "قطع صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 130, icon: "🌯" },
+          { id: "c11", name: "كريب شيش - كبير", description: "قطع صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 150, icon: "🌯" },
+          { id: "c12", name: "كريب شيش - VIP", description: "قطع صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 300, icon: "🌯" },
+
+          { id: "c13", name: "كريب مكس - صغير", description: "شيش، استربس، بانيه وكامل الإضافات.", price: 80, icon: "🌯" },
+          { id: "c14", name: "كريب مكس - وسط", description: "شيش، استربس، بانيه وكامل الإضافات.", price: 100, icon: "🌯" },
+          { id: "c15", name: "كريب مكس - كبير", description: "شيش، استربس، بانيه وكامل الإضافات.", price: 150, icon: "🌯" },
+          { id: "c16", name: "كريب مكس - VIP", description: "شيش، استربس، بانيه وكامل الإضافات.", price: 250, icon: "🌯" },
+
+          { id: "c17", name: "كريب رول - صغير", description: "مكس فراخ مخصوص مع كامل الإضافات.", price: 100, icon: "🌯" },
+          { id: "c18", name: "كريب رول - وسط", description: "مكس فراخ مخصوص مع كامل الإضافات.", price: 130, icon: "🌯" },
+          { id: "c19", name: "كريب رول - كبير", description: "مكس فراخ مخصوص مع كامل الإضافات.", price: 160, icon: "🌯" },
+          { id: "c20", name: "كريب رول - VIP", description: "مكس فراخ مخصوص مع كامل الإضافات.", price: 250, icon: "🌯" }
+        ]
+      },
+
+      burger: {
+        title: "برجر السلطان",
+        description: "برجر لحم طازج مع البطاطس وصوص تاكسس",
+        items: [
+          { id: "b1", name: "كلاسيك برجر", description: "بيف، صوص تاكسس، كابوتشه وبطاطس.", price: 80, icon: "🍔" },
+          { id: "b2", name: "تشيز برجر", description: "بيف، موتزاريلا، شيدر، صوص تاكسس وبطاطس.", price: 100, icon: "🍔" },
+          { id: "b3", name: "بيج برجر", description: "٢ قطعة بيف، صوص تاكسس، شيدر وبطاطس.", price: 150, icon: "🍔" },
+          { id: "b4", name: "بيج برجر كبير", description: "٢ قطعة بيف، صوص تاكسس، شيدر وبطاطس.", price: 200, icon: "🍔" }
+        ]
+      },
+
+      pizza: {
+        title: "بيتزا السلطان",
+        description: "بيتزا طازجة بكامل الإضافات",
+        items: [
+          { id: "p1", name: "بيتزا فراخ - وسط", description: "استربس أو بانيه أو شيش مع كامل الإضافات.", price: 130, icon: "🍕" },
+          { id: "p2", name: "بيتزا فراخ - كبير", description: "استربس أو بانيه أو شيش مع كامل الإضافات.", price: 160, icon: "🍕" },
+
+          { id: "p3", name: "بيتزا لحوم - وسط", description: "برجر أو كفتة أو سوسيس مع كامل الإضافات.", price: 130, icon: "🍕" },
+          { id: "p4", name: "بيتزا لحوم - كبير", description: "برجر أو كفتة أو سوسيس مع كامل الإضافات.", price: 160, icon: "🍕" },
+
+          { id: "p5", name: "بيتزا جبن - وسط", description: "موتزاريلا، شيدر، رومي وفلمنكو مع كامل الإضافات.", price: 130, icon: "🍕" },
+          { id: "p6", name: "بيتزا جبن - كبير", description: "موتزاريلا، شيدر، رومي وفلمنكو مع كامل الإضافات.", price: 160, icon: "🍕" }
+        ]
+      }
+    };
+
+    let currentCategory = "crepe";
+    let cart = [];
+
+    const menuGrid = document.getElementById("menuGrid");
+    const categoryTitle = document.getElementById("categoryTitle");
+    const categoryDescription = document.getElementById("categoryDescription");
+    const cartSidebar = document.getElementById("cartSidebar");
+    const overlay = document.getElementById("overlay");
+    const cartItems = document.getElementById("cartItems");
+    const cartCount = document.getElementById("cartCount");
+    const cartTotal = document.getElementById("cartTotal");
+    const checkoutBtn = document.getElementById("checkoutBtn");
+    const checkoutModal = document.getElementById("checkoutModal");
+    const successModal = document.getElementById("successModal");
+
+    function renderMenu() {
+      const category = menu[currentCategory];
+      categoryTitle.textContent = category.title;
+      categoryDescription.textContent = category.description;
+
+      menuGrid.innerHTML = category.items.map(item => `
+        <article class="food-card">
+          <div class="food-image">${item.icon}</div>
+          <div class="food-content">
+            <h3>${item.name}</h3>
+            <p>${item.description}</p>
+            <div class="card-footer">
+              <span class="price">${item.price} جنيه</span>
+              <button class="add-btn" onclick="addToCart('${item.id}')">أضف للسلة</button>
+            </div>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function findItem(id) {
+      for (const category of Object.values(menu)) {
+        const item = category.items.find(item => item.id === id);
+        if (item) return item;
+      }
+    }
+
+    function addToCart(id) {
+      const existing = cart.find(item => item.id === id);
+
+      if (existing) {
+        existing.quantity++;
+      } else {
+        const item = findItem(id);
+        cart.push({ ...item, quantity: 1 });
+      }
+
+      renderCart();
+      openCart();
+    }
+
+    function updateQuantity(id, amount) {
+      const item = cart.find(item => item.id === id);
+      if (!item) return;
+
+      item.quantity += amount;
+
+      if (item.quantity <= 0) {
+        cart = cart.filter(item => item.id !== id);
+      }
+
+      renderCart();
+    }
+
+    function renderCart() {
+      const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+      const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+      cartCount.textContent = count;
+      cartTotal.textContent = `${total} جنيه`;
+      checkoutBtn.disabled = cart.length === 0;
+
+      if (!cart.length) {
+        cartItems.innerHTML = `<p class="empty-cart">سلتك فارغة حالياً.<br>اختر وجبتك المفضلة وأضفها هنا 🍽️</p>`;
+        return;
+      }
+
+      cartItems.innerHTML = cart.map(item => `
+        <div class="cart-item">
+          <div class="cart-item-icon">${item.icon}</div>
+          <div>
+            <h4>${item.name}</h4>
+            <small>${item.price * item.quantity} جنيه</small>
+          </div>
+          <div class="quantity">
+            <button onclick="updateQuantity('${item.id}', -1)" aria-label="تقليل الكمية">−</button>
+            <strong>${item.quantity}</strong>
+            <button onclick="updateQuantity('${item.id}', 1)" aria-label="زيادة الكمية">+</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function openCart() {
+      cartSidebar.classList.add("open");
+      overlay.classList.add("show");
+    }
+
+    function closeEverything() {
+      cartSidebar.classList.remove("open");
+      checkoutModal.classList.remove("show");
+      successModal.classList.remove("show");
+      overlay.classList.remove("show");
+    }
+
+    document.querySelectorAll(".category").forEach(button => {
+      button.addEventListener("click", () => {
+        currentCategory = button.dataset.category;
+        document.querySelectorAll(".category").forEach(btn => btn.classList.remove("active"));
+        button.classList.add("active");
+        renderMenu();
+      });
+    });
+
+    document.getElementById("cartToggle").addEventListener("click", openCart);
+    document.getElementById("closeCart").addEventListener("click", closeEverything);
+    document.getElementById("closeCheckout").addEventListener("click", closeEverything);
+    overlay.addEventListener("click", closeEverything);
+
+    checkoutBtn.addEventListener("click", () => {
+      if (!cart.length) return;
+      cartSidebar.classList.remove("open");
+      checkoutModal.classList.add("show");
+      overlay.classList.add("show");
+    });
+
+    document.getElementById("orderForm").addEventListener("submit", async event => {
+      event.preventDefault();
+
+      if (!cart.length) {
+        alert("سلة الطلبات فارغة.");
+        return;
+      }
+
+      const submitButton = event.target.querySelector('button[type="submit"]');
+      const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+      const orderData = {
+        orderNumber: "CES-" + Date.now(),
+        fullName: document.getElementById("fullName").value.trim(),
+        phone: document.getElementById("phone").value.trim(),
+        address: document.getElementById("address").value.trim(),
+        payment: document.getElementById("payment").value,
+        items: cart.map(item => ({
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity
+        })),
+        total: total
+      };
+
+      try {
+        submitButton.disabled = true;
+        submitButton.textContent = "جارٍ إرسال الطلب...";
+
+        await fetch(GOOGLE_SHEET_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+          },
+          body: JSON.stringify(orderData)
+        });
+
+        cart = [];
+        renderCart();
+        event.target.reset();
+
+        checkoutModal.classList.remove("show");
+        successModal.classList.add("show");
+        overlay.classList.add("show");
+
+      } catch (error) {
+        alert("تعذر إرسال الطلب حالياً. يرجى المحاولة مرة أخرى.");
+        console.error(error);
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = "تأكيد الطلب";
+      }
+    });
+
+    document.getElementById("successClose").addEventListener("click", closeEverything);
+
+    renderMenu();
+    renderCart();
+  </script>
+</body>
+</html
