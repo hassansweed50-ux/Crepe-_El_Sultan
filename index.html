@@ -1,9 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>كريب السلطان | Crepe El Sultan</title>
+
   <style>
     :root {
       --red: #d92d27;
@@ -32,33 +34,32 @@
       overflow: hidden;
       min-height: 280px;
       padding: 28px 6% 38px;
-      background:
-        radial-gradient(circle at 8% 20%, rgba(255, 206, 71, .5) 0 5%, transparent 5.5%),
-        radial-gradient(circle at 92% 78%, rgba(255, 190, 64, .35) 0 7%, transparent 7.5%),
-        linear-gradient(135deg, #a8171d, #df3e22 58%, #ff8917);
+      background: linear-gradient(135deg, #a8171d, #df3e22 58%, #ff8917);
       color: white;
     }
 
-    .hero::before,
-    .hero::after {
+    .hero-background {
       position: absolute;
-      opacity: .16;
-      font-size: 130px;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
       z-index: 0;
-    }
-
-    .hero::before {
-      content: "🍔";
-      left: 8%;
-      bottom: -35px;
-      transform: rotate(-18deg);
+      animation: heroZoom 16s ease-in-out infinite alternate;
     }
 
     .hero::after {
-      content: "🍕";
-      right: 6%;
-      top: -35px;
-      transform: rotate(17deg);
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background: linear-gradient(
+        135deg,
+        rgba(113, 17, 18, .76),
+        rgba(217, 45, 39, .52) 58%,
+        rgba(255, 138, 24, .35)
+      );
     }
 
     .topbar, .welcome {
@@ -181,7 +182,8 @@
       transition: .2s;
     }
 
-    .category:hover, .category.active {
+    .category:hover,
+    .category.active {
       color: white;
       background: var(--red);
       transform: translateY(-2px);
@@ -189,6 +191,7 @@
 
     .category[data-category="crepe"] { grid-area: crepe; }
     .category[data-category="burger"] { grid-area: burger; }
+
     .category[data-category="pizza"] {
       grid-area: pizza;
       width: 50%;
@@ -223,6 +226,7 @@
       border-radius: 19px;
       box-shadow: var(--shadow);
       transition: transform .2s, box-shadow .2s;
+      animation: cardEnter .42s ease both;
     }
 
     .food-card:hover {
@@ -232,11 +236,22 @@
 
     .food-image {
       height: 155px;
-      display: grid;
-      place-items: center;
-      font-size: 72px;
       background: linear-gradient(135deg, #fff1cb, #ffc563);
       position: relative;
+      overflow: hidden;
+    }
+
+    .food-image img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transition: transform .35s ease;
+    }
+
+    .food-card:hover .food-image img {
+      transform: scale(1.06);
     }
 
     .food-image::after {
@@ -249,6 +264,7 @@
       padding: 4px 9px;
       color: white;
       font-size: .7rem;
+      z-index: 1;
     }
 
     .food-content { padding: 16px; }
@@ -368,13 +384,19 @@
     }
 
     .cart-item-icon {
-      display: grid;
-      place-items: center;
       width: 43px;
       height: 43px;
       border-radius: 10px;
       background: #fff0cf;
-      font-size: 25px;
+      overflow: hidden;
+    }
+
+    .cart-item-icon img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
     }
 
     .cart-item h4 {
@@ -532,6 +554,23 @@
       font-weight: bold;
     }
 
+    @keyframes heroZoom {
+      from { transform: scale(1); }
+      to { transform: scale(1.07); }
+    }
+
+    @keyframes cardEnter {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     @media (max-width: 520px) {
       .hero {
         min-height: 245px;
@@ -545,9 +584,7 @@
       .category[data-category="pizza"] { width: 70%; }
       .food-image { height: 135px; }
 
-      .restaurant-info {
-        gap: 7px;
-      }
+      .restaurant-info { gap: 7px; }
 
       .restaurant-info span {
         width: 100%;
@@ -557,8 +594,12 @@
     }
   </style>
 </head>
+
 <body>
   <header class="hero">
+    <!-- ضع مسار صورة الخلفية مكان XXXXXXXXXX -->
+    <img class="hero-background" src="soltan.jpeg" alt="كريب السلطان">
+
     <div class="topbar">
       <div class="brand">
         <span class="brand-mark">♛</span>
@@ -612,12 +653,16 @@
         <span>الإجمالي</span>
         <span id="cartTotal">0 جنيه</span>
       </div>
-      <button class="checkout-btn" id="checkoutBtn" disabled>إتمام الطلب</button>
+
+      <button class="checkout-btn" id="checkoutBtn" disabled>
+        إتمام الطلب
+      </button>
     </div>
   </aside>
 
   <div class="modal" id="checkoutModal">
     <button class="close-btn" id="closeCheckout" style="position:absolute; top:14px; left:14px">×</button>
+
     <h2>بيانات التوصيل</h2>
     <p class="modal-intro">أكمل بياناتك وسنتواصل معك لتأكيد الطلب</p>
 
@@ -651,63 +696,88 @@
   <script>
     const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbxuP0T-AgKMxY4EaogZfod0IENHYF2tEJdr5dAtX7ZwazsMcCSe9ng0ELBwfxWFr4aO/exec";
 
+    /*
+      ضع مسارات الصور مكان XXXXXXXXXX فقط.
+      كل مجموعة تستخدم نفس الصورة لجميع أحجامها.
+    */
+    const PRODUCT_IMAGES = {
+      crepeStrips: "HH.jpeg",
+      crepePane: "pane.jpeg",
+      crepeShish: "mix.jpeg",
+      crepeMix: "mix.jpeg",
+      crepeRoll: "Rol.jpeg",
+
+      burgerBeef: "beef.jpeg",
+      burgerChicken: "ck.jpeg",
+
+      pizzaChicken: "pizza.jpeg",
+      pizzaMeat: "pizza.jpeg",
+      pizzaCheese: "piza cheez.jpeg"
+    };
+
     const menu = {
       crepe: {
         title: "كريب السلطان",
         description: "اختار نوع وحجم الكريب المناسب لك",
-        items:
-         [
-          
-          { id: "c1", name: "كريب استربس - صغير", description: "صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 70, icon: "🌯" },
-          { id: "c2", name: "كريب استربس - وسط", description: "صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 90, icon: "🌯" },
-          { id: "c3", name: "كريب استربس - كبير", description: "صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 150, icon: "🌯" },
-          { id: "c4", name: "كريب استربس - VIP", description: "صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 250, icon: "🌯" },
 
-          { id: "c5", name: "كريب بانيه - صغير", description: "شرائح فراخ متبلة، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 40, icon: "🌯" },
-          { id: "c6", name: "كريب بانيه - وسط", description: "شرائح فراخ متبلة، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 60, icon: "🌯" },
-          { id: "c7", name: "كريب بانيه - كبير", description: "شرائح فراخ متبلة، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 80, icon: "🌯" },
-          { id: "c8", name: "كريب بانيه - VIP", description: "شرائح فراخ متبلة، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 200, icon: "🌯" },
+        items: [
+          { id: "c1", name: "كريب استربس - صغير", description: "صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 70, image: PRODUCT_IMAGES.crepeStrips },
+          { id: "c2", name: "كريب استربس - وسط", description: "صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 90, image: PRODUCT_IMAGES.crepeStrips },
+          { id: "c3", name: "كريب استربس - كبير", description: "صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 150, image: PRODUCT_IMAGES.crepeStrips },
+          { id: "c4", name: "كريب استربس - VIP", description: "صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 250, image: PRODUCT_IMAGES.crepeStrips },
 
-          { id: "c9", name: "كريب شيش - صغير", description: "قطع صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 100, icon: "🌯" },
-          { id: "c10", name: "كريب شيش - وسط", description: "قطع صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 130, icon: "🌯" },
-          { id: "c11", name: "كريب شيش - كبير", description: "قطع صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 150, icon: "🌯" },
-          { id: "c12", name: "كريب شيش - VIP", description: "قطع صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 300, icon: "🌯" },
+          { id: "c5", name: "كريب بانيه - صغير", description: "شرائح فراخ متبلة، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 40, image: PRODUCT_IMAGES.crepePane },
+          { id: "c6", name: "كريب بانيه - وسط", description: "شرائح فراخ متبلة، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 60, image: PRODUCT_IMAGES.crepePane },
+          { id: "c7", name: "كريب بانيه - كبير", description: "شرائح فراخ متبلة، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 80, image: PRODUCT_IMAGES.crepePane },
+          { id: "c8", name: "كريب بانيه - VIP", description: "شرائح فراخ متبلة، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 200, image: PRODUCT_IMAGES.crepePane },
 
-          { id: "c13", name: "كريب مكس - صغير", description: "شيش، استربس، بانيه وكامل الإضافات.", price: 80, icon: "🌯" },
-          { id: "c14", name: "كريب مكس - وسط", description: "شيش، استربس، بانيه وكامل الإضافات.", price: 100, icon: "🌯" },
-          { id: "c15", name: "كريب مكس - كبير", description: "شيش، استربس، بانيه وكامل الإضافات.", price: 150, icon: "🌯" },
-          { id: "c16", name: "كريب مكس - VIP", description: "شيش، استربس، بانيه وكامل الإضافات.", price: 250, icon: "🌯" },
+          { id: "c9", name: "كريب شيش - صغير", description: "قطع صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 100, image: PRODUCT_IMAGES.crepeShish },
+          { id: "c10", name: "كريب شيش - وسط", description: "قطع صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 130, image: PRODUCT_IMAGES.crepeShish },
+          { id: "c11", name: "كريب شيش - كبير", description: "قطع صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 150, image: PRODUCT_IMAGES.crepeShish },
+          { id: "c12", name: "كريب شيش - VIP", description: "قطع صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 300, image: PRODUCT_IMAGES.crepeShish },
 
-          { id: "c17", name: "كريب رول - صغير", description: "مكس فراخ مخصوص مع كامل الإضافات.", price: 100, icon: "🌯" },
-          { id: "c18", name: "كريب رول - وسط", description: "مكس فراخ مخصوص مع كامل الإضافات.", price: 130, icon: "🌯" },
-          { id: "c19", name: "كريب رول - كبير", description: "مكس فراخ مخصوص مع كامل الإضافات.", price: 160, icon: "🌯" },
-          { id: "c20", name: "كريب رول - VIP", description: "مكس فراخ مخصوص مع كامل الإضافات.", price: 250, icon: "🌯" }
+          { id: "c13", name: "كريب مكس - صغير", description: "شيش، استربس، بانيه وكامل الإضافات.", price: 80, image: PRODUCT_IMAGES.crepeMix },
+          { id: "c14", name: "كريب مكس - وسط", description: "شيش، استربس، بانيه وكامل الإضافات.", price: 100, image: PRODUCT_IMAGES.crepeMix },
+          { id: "c15", name: "كريب مكس - كبير", description: "شيش، استربس، بانيه وكامل الإضافات.", price: 150, image: PRODUCT_IMAGES.crepeMix },
+          { id: "c16", name: "كريب مكس - VIP", description: "شيش، استربس، بانيه وكامل الإضافات.", price: 250, image: PRODUCT_IMAGES.crepeMix },
+
+          { id: "c17", name: "كريب رول - صغير", description: "مكس فراخ مخصوص مع كامل الإضافات.", price: 100, image: PRODUCT_IMAGES.crepeRoll },
+          { id: "c18", name: "كريب رول - وسط", description: "مكس فراخ مخصوص مع كامل الإضافات.", price: 130, image: PRODUCT_IMAGES.crepeRoll },
+          { id: "c19", name: "كريب رول - كبير", description: "مكس فراخ مخصوص مع كامل الإضافات.", price: 160, image: PRODUCT_IMAGES.crepeRoll },
+          { id: "c20", name: "كريب رول - VIP", description: "مكس فراخ مخصوص مع كامل الإضافات.", price: 250, image: PRODUCT_IMAGES.crepeRoll }
         ]
       },
 
       burger: {
         title: "برجر السلطان",
-        description: "برجر لحم طازج مع البطاطس وصوص تاكسس",
+        description: "برجر لحم وبرجر فراخ طازج مع البطاطس وصوص تاكسس",
+
         items: [
-          { id: "b1", name: "كلاسيك برجر", description: "بيف، صوص تاكسس، كابوتشه وبطاطس.", price: 80, icon: "🍔" },
-          { id: "b2", name: "تشيز برجر", description: "بيف، موتزاريلا، شيدر، صوص تاكسس وبطاطس.", price: 100, icon: "🍔" },
-          { id: "b3", name: "بيج برجر", description: "٢ قطعة بيف، صوص تاكسس، شيدر وبطاطس.", price: 150, icon: "🍔" },
-          { id: "b4", name: "بيج برجر كبير", description: "٢ قطعة بيف، صوص تاكسس، شيدر وبطاطس.", price: 200, icon: "🍔" }
+          { id: "b1", name: "كلاسيك برجر بيف", description: "بيف، صوص تاكسس، كابوتشه وبطاطس.", price: 80, image: PRODUCT_IMAGES.burgerBeef },
+          { id: "b2", name: "تشيز برجر بيف", description: "بيف، موتزاريلا، شيدر، صوص تاكسس وبطاطس.", price: 100, image: PRODUCT_IMAGES.burgerBeef },
+          { id: "b3", name: "بيج برجر بيف", description: "٢ قطعة بيف، صوص تاكسس، شيدر وبطاطس.", price: 150, image: PRODUCT_IMAGES.burgerBeef },
+          { id: "b4", name: "بيج برجر بيف كبير", description: "٢ قطعة بيف، صوص تاكسس، شيدر وبطاطس.", price: 200, image: PRODUCT_IMAGES.burgerBeef },
+
+          { id: "b5", name: "كلاسيك برجر فراخ", description: "فراخ، صوص تاكسس، كابوتشه وبطاطس.", price: 80, image: PRODUCT_IMAGES.burgerChicken },
+          { id: "b6", name: "تشيز برجر فراخ", description: "فراخ، موتزاريلا، شيدر، صوص تاكسس وبطاطس.", price: 100, image: PRODUCT_IMAGES.burgerChicken },
+          { id: "b7", name: "بيج برجر فراخ", description: "٢ قطعة فراخ، صوص تاكسس، شيدر وبطاطس.", price: 150, image: PRODUCT_IMAGES.burgerChicken },
+          { id: "b8", name: "بيج برجر فراخ كبير", description: "٢ قطعة فراخ، صوص تاكسس، شيدر وبطاطس.", price: 200, image: PRODUCT_IMAGES.burgerChicken }
         ]
       },
 
       pizza: {
         title: "بيتزا السلطان",
         description: "بيتزا طازجة بكامل الإضافات",
+
         items: [
-          { id: "p1", name: "بيتزا فراخ - وسط", description: "استربس أو بانيه أو شيش مع كامل الإضافات.", price: 130, icon: "🍕" },
-          { id: "p2", name: "بيتزا فراخ - كبير", description: "استربس أو بانيه أو شيش مع كامل الإضافات.", price: 160, icon: "🍕" },
+          { id: "p1", name: "بيتزا فراخ - وسط", description: "استربس أو بانيه أو شيش مع كامل الإضافات.", price: 130, image: PRODUCT_IMAGES.pizzaChicken },
+          { id: "p2", name: "بيتزا فراخ - كبير", description: "استربس أو بانيه أو شيش مع كامل الإضافات.", price: 160, image: PRODUCT_IMAGES.pizzaChicken },
 
-          { id: "p3", name: "بيتزا لحوم - وسط", description: "برجر أو كفتة أو سوسيس مع كامل الإضافات.", price: 130, icon: "🍕" },
-          { id: "p4", name: "بيتزا لحوم - كبير", description: "برجر أو كفتة أو سوسيس مع كامل الإضافات.", price: 160, icon: "🍕" },
+          { id: "p3", name: "بيتزا لحوم - وسط", description: "برجر أو كفتة أو سوسيس مع كامل الإضافات.", price: 130, image: PRODUCT_IMAGES.pizzaMeat },
+          { id: "p4", name: "بيتزا لحوم - كبير", description: "برجر أو كفتة أو سوسيس مع كامل الإضافات.", price: 160, image: PRODUCT_IMAGES.pizzaMeat },
 
-          { id: "p5", name: "بيتزا جبن - وسط", description: "موتزاريلا، شيدر، رومي وفلمنكو مع كامل الإضافات.", price: 130, icon: "🍕" },
-          { id: "p6", name: "بيتزا جبن - كبير", description: "موتزاريلا، شيدر، رومي وفلمنكو مع كامل الإضافات.", price: 160, icon: "🍕" }
+          { id: "p5", name: "بيتزا جبن - وسط", description: "موتزاريلا، شيدر، رومي وفلمنكو مع كامل الإضافات.", price: 130, image: PRODUCT_IMAGES.pizzaCheese },
+          { id: "p6", name: "بيتزا جبن - كبير", description: "موتزاريلا، شيدر، رومي وفلمنكو مع كامل الإضافات.", price: 160, image: PRODUCT_IMAGES.pizzaCheese }
         ]
       }
     };
@@ -729,18 +799,25 @@
 
     function renderMenu() {
       const category = menu[currentCategory];
+
       categoryTitle.textContent = category.title;
       categoryDescription.textContent = category.description;
 
       menuGrid.innerHTML = category.items.map(item => `
         <article class="food-card">
-          <div class="food-image">${item.icon}</div>
+          <div class="food-image">
+            <img src="${item.image}" alt="${item.name}">
+          </div>
+
           <div class="food-content">
             <h3>${item.name}</h3>
             <p>${item.description}</p>
+
             <div class="card-footer">
               <span class="price">${item.price} جنيه</span>
-              <button class="add-btn" onclick="addToCart('${item.id}')">أضف للسلة</button>
+              <button class="add-btn" onclick="addToCart('${item.id}')">
+                أضف للسلة
+              </button>
             </div>
           </div>
         </article>
@@ -790,17 +867,26 @@
       checkoutBtn.disabled = cart.length === 0;
 
       if (!cart.length) {
-        cartItems.innerHTML = `<p class="empty-cart">سلتك فارغة حالياً.<br>اختر وجبتك المفضلة وأضفها هنا 🍽️</p>`;
+        cartItems.innerHTML = `
+          <p class="empty-cart">
+            سلتك فارغة حالياً.<br>
+            اختر وجبتك المفضلة وأضفها هنا 🍽️
+          </p>
+        `;
         return;
       }
 
       cartItems.innerHTML = cart.map(item => `
         <div class="cart-item">
-          <div class="cart-item-icon">${item.icon}</div>
+          <div class="cart-item-icon">
+            <img src="${item.image}" alt="${item.name}">
+          </div>
+
           <div>
             <h4>${item.name}</h4>
             <small>${item.price * item.quantity} جنيه</small>
           </div>
+
           <div class="quantity">
             <button onclick="updateQuantity('${item.id}', -1)" aria-label="تقليل الكمية">−</button>
             <strong>${item.quantity}</strong>
@@ -825,7 +911,11 @@
     document.querySelectorAll(".category").forEach(button => {
       button.addEventListener("click", () => {
         currentCategory = button.dataset.category;
-        document.querySelectorAll(".category").forEach(btn => btn.classList.remove("active"));
+
+        document.querySelectorAll(".category").forEach(btn => {
+          btn.classList.remove("active");
+        });
+
         button.classList.add("active");
         renderMenu();
       });
@@ -838,6 +928,7 @@
 
     checkoutBtn.addEventListener("click", () => {
       if (!cart.length) return;
+
       cartSidebar.classList.remove("open");
       checkoutModal.classList.add("show");
       overlay.classList.add("show");
@@ -892,6 +983,7 @@
       } catch (error) {
         alert("تعذر إرسال الطلب حالياً. يرجى المحاولة مرة أخرى.");
         console.error(error);
+
       } finally {
         submitButton.disabled = false;
         submitButton.textContent = "تأكيد الطلب";
@@ -904,4 +996,5 @@
     renderCart();
   </script>
 </body>
-</html
+</html>
+```
