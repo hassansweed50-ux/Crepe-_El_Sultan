@@ -597,7 +597,6 @@
 
 <body>
   <header class="hero">
-    <!-- ضع مسار صورة الخلفية مكان XXXXXXXXXX -->
     <img class="hero-background" src="soltan.jpeg" alt="كريب السلطان">
 
     <div class="topbar">
@@ -676,6 +675,10 @@
       <label for="address">عنوان التوصيل</label>
       <textarea id="address" placeholder="المنطقة، الشارع، رقم العقار..." required></textarea>
 
+      <!-- خانة الملاحظات الجديدة -->
+      <label for="notes">ملاحظات على الطلب</label>
+      <textarea id="notes" placeholder="مثال: بدون كاتشب، زيادة جبنة، بدون بصل..."></textarea>
+
       <label for="payment">طريقة الدفع</label>
       <select id="payment" required>
         <option value="" selected disabled>اختر طريقة الدفع</option>
@@ -694,13 +697,9 @@
   </div>
 
   <script>
-    const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbxuP0T-AgKMxY4EaogZfod0IENHYF2tEJdr5dAtX7ZwazsMcCSe9ng0ELBwfxWFr4aO/exec";
+    const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbygsDqIAiAiUeI7qFyQQTzqqgC3lPrilaxCg70OYtGddtwGR8YY-dc7gLh_lnWTdQg/exec";
 
-    /*
-      ضع مسارات الصور مكان XXXXXXXXXX فقط.
-      كل مجموعة تستخدم نفس الصورة لجميع أحجامها.
-    */
-    const PRODUCT_IMAGES = {
+     const PRODUCT_IMAGES = {
       crepeStrips: "HH.jpeg",
       crepePane: "pane.jpeg",
       crepeShish: "mix.jpeg",
@@ -719,7 +718,6 @@
       crepe: {
         title: "كريب السلطان",
         description: "اختار نوع وحجم الكريب المناسب لك",
-
         items: [
           { id: "c1", name: "كريب استربس - صغير", description: "صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 70, image: PRODUCT_IMAGES.crepeStrips },
           { id: "c2", name: "كريب استربس - وسط", description: "صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 90, image: PRODUCT_IMAGES.crepeStrips },
@@ -751,7 +749,6 @@
       burger: {
         title: "برجر السلطان",
         description: "برجر لحم وبرجر فراخ طازج مع البطاطس وصوص تاكسس",
-
         items: [
           { id: "b1", name: "كلاسيك برجر بيف", description: "بيف، صوص تاكسس، كابوتشه وبطاطس.", price: 80, image: PRODUCT_IMAGES.burgerBeef },
           { id: "b2", name: "تشيز برجر بيف", description: "بيف، موتزاريلا، شيدر، صوص تاكسس وبطاطس.", price: 100, image: PRODUCT_IMAGES.burgerBeef },
@@ -768,7 +765,6 @@
       pizza: {
         title: "بيتزا السلطان",
         description: "بيتزا طازجة بكامل الإضافات",
-
         items: [
           { id: "p1", name: "بيتزا فراخ - وسط", description: "استربس أو بانيه أو شيش مع كامل الإضافات.", price: 130, image: PRODUCT_IMAGES.pizzaChicken },
           { id: "p2", name: "بيتزا فراخ - كبير", description: "استربس أو بانيه أو شيش مع كامل الإضافات.", price: 160, image: PRODUCT_IMAGES.pizzaChicken },
@@ -950,6 +946,10 @@
         fullName: document.getElementById("fullName").value.trim(),
         phone: document.getElementById("phone").value.trim(),
         address: document.getElementById("address").value.trim(),
+
+        // الملاحظات التي كتبها العميل
+        notes: document.getElementById("notes").value.trim(),
+
         payment: document.getElementById("payment").value,
         items: cart.map(item => ({
           name: item.name,
