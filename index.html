@@ -221,7 +221,7 @@
       grid-template-columns: 1fr 1fr;
       grid-template-areas:
         "crepe burger"
-        "pizza pizza";
+        "pizza extras";
       gap: 12px;
     }
 
@@ -246,12 +246,8 @@
 
     .category[data-category="crepe"] { grid-area: crepe; }
     .category[data-category="burger"] { grid-area: burger; }
-
-    .category[data-category="pizza"] {
-      grid-area: pizza;
-      width: 50%;
-      justify-self: center;
-    }
+    .category[data-category="pizza"] { grid-area: pizza; }
+    .category[data-category="extras"] { grid-area: extras; }
 
     .section-heading {
       margin: 8px 0 20px;
@@ -654,7 +650,6 @@
       .brand { font-size: .95rem; }
       .brand-mark { width: 37px; height: 37px; }
       .cart-toggle { padding: 9px 11px; font-size: .85rem; }
-      .category[data-category="pizza"] { width: 70%; }
       .food-image { height: 135px; }
 
       .restaurant-info { gap: 7px; }
@@ -720,6 +715,7 @@
       <button class="category active" data-category="crepe">🌯 كريب</button>
       <button class="category" data-category="burger">🍔 برجر</button>
       <button class="category" data-category="pizza">🍕 بيتزا</button>
+      <button class="category" data-category="extras">🍟 الإضافات</button>
     </nav>
 
     <section class="section-heading">
@@ -805,7 +801,14 @@
 
       pizzaChicken: "pizza.jpeg",
       pizzaMeat: "pizza.jpeg",
-      pizzaCheese: "piza cheez.jpeg"
+      pizzaCheese: "piza cheez.jpeg",
+
+      
+      extrasCrepePotato: "potato.png",
+      extrasPotatoPacket: "باكت بطاطس.png",
+      extrasCheddarSauce: "شيدر.png",
+      extrasKetchup: "كاتشب.png"
+      
     };
 
     const menu = {
@@ -869,7 +872,20 @@
           { id: "p5", name: "بيتزا جبن - وسط", description: "موتزاريلا، شيدر، رومي وفلمنكو مع كامل الإضافات.", price: 130, image: PRODUCT_IMAGES.pizzaCheese },
           { id: "p6", name: "بيتزا جبن - كبير", description: "موتزاريلا، شيدر، رومي وفلمنكو مع كامل الإضافات.", price: 160, image: PRODUCT_IMAGES.pizzaCheese }
         ]
+      },
+
+      
+      extras: {
+        title: "إضافات السلطان",
+        description: "اختار الإضافات اللي تحبها مع طلبك",
+        items: [
+          { id: "e1", name: "كريب بطاطس", description: "كريب محشي بطاطس مقرمشة ولذيذة.", price: 40, image: PRODUCT_IMAGES.extrasCrepePotato },
+          { id: "e2", name: "باكيت بطاطس", description: "باكيت بطاطس مقرمشة سخنة.", price: 10, image: PRODUCT_IMAGES.extrasPotatoPacket },
+          { id: "e3", name: "صوص شيدر", description: "كيس صوص شيدر (السعر للكيس الواحد).", price: 5, image: PRODUCT_IMAGES.extrasCheddarSauce },
+          { id: "e4", name: "كاتشب", description: "5 كياس كاتشب صغيرة.", price: 5, image: PRODUCT_IMAGES.extrasKetchup }
+        ]
       }
+      
     };
 
     let currentCategory = "crepe";
@@ -926,7 +942,7 @@
     }
 
     function validatePhone(phone) {
-      // لازم يكون 11 رقم بالضبط ويبدأ بـ 01
+      
       const cleaned = phone.replace(/\s+/g, "");
       return /^01[0-9]{9}$/.test(cleaned);
     }
@@ -1179,7 +1195,7 @@
       this.classList.remove("input-error");
       document.getElementById("phoneError").classList.remove("show");
     });
-    // ====== نهاية إزالة الخطأ ======
+    
 
     document.getElementById("successClose").addEventListener("click", closeEverything);
 
