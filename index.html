@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -150,6 +149,62 @@
       font-size: .88rem;
       font-weight: bold;
     }
+
+    /* ====== إشعار إغلاق المطعم (تعديل جديد) ====== */
+    .closed-notice {
+      display: none;
+      background: #fff3cd;
+      color: #856404;
+      border: 2px solid #ffc107;
+      border-radius: 14px;
+      padding: 18px 20px;
+      text-align: center;
+      max-width: 800px;
+      margin: -15px auto 20px;
+      position: relative;
+      z-index: 3;
+      font-weight: bold;
+      box-shadow: 0 8px 25px rgba(0,0,0,.1);
+      animation: shake .5s ease;
+    }
+
+    .closed-notice.show {
+      display: block;
+    }
+
+    .closed-notice .icon {
+      font-size: 1.8rem;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .closed-notice h3 {
+      margin: 0 0 6px;
+      color: #b85c00;
+      font-size: 1.2rem;
+    }
+
+    .closed-notice p {
+      margin: 0;
+      line-height: 1.7;
+      font-size: .95rem;
+    }
+
+    .closed-notice .hours {
+      margin-top: 10px;
+      padding: 8px 14px;
+      background: rgba(255, 193, 7, .2);
+      border-radius: 8px;
+      display: inline-block;
+      font-size: .9rem;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+    /* ====== نهاية الإشعار ====== */
 
     main {
       max-width: 1180px;
@@ -515,6 +570,24 @@
       resize: vertical;
     }
 
+    /* رسالة خطأ رقم التليفون (تعديل جديد) */
+    .input-error {
+      border-color: var(--red) !important;
+      box-shadow: 0 0 0 3px rgba(217, 45, 39, .15) !important;
+    }
+
+    .error-msg {
+      display: none;
+      color: var(--red);
+      font-size: .85rem;
+      margin-top: 5px;
+      font-weight: bold;
+    }
+
+    .error-msg.show {
+      display: block;
+    }
+
     .submit-order {
       width: 100%;
       padding: 13px;
@@ -591,6 +664,13 @@
         border-radius: 10px;
         font-size: .8rem;
       }
+
+      .closed-notice {
+        margin: -10px 10px 15px;
+        padding: 15px;
+      }
+
+      .closed-notice h3 { font-size: 1.05rem; }
     }
   </style>
 </head>
@@ -618,9 +698,22 @@
         <span>🛵 خدمة التوصيل متاحة</span>
         <span>📍 الشرقية / مركز أبو حماد / كفر عياد / منزل العمدة</span>
         <span>📞 01008136174 - 01204857565</span>
+        <span>🕒 يومياً من 3 مساءً حتى 3 صباحاً (ما عدا الأحد)</span>
       </div>
     </div>
   </header>
+
+  <!-- ====== إشعار إغلاق المطعم (تعديل جديد) ====== -->
+  <div class="closed-notice" id="closedNotice">
+    <span class="icon">🔒</span>
+    <h3>المطعم مغلق الآن</h3>
+    <p id="closedMessage">نعتذر، المطعم مغلق في هذا الوقت.</p>
+    <div class="hours" id="closedHours">
+      🕒 مواعيد العمل: كل أيام الأسبوع ما عدا يوم الأحد<br>
+      من الساعة 3:00 مساءً حتى 3:00 صباحاً
+    </div>
+  </div>
+  <!-- ====== نهاية الإشعار ====== -->
 
   <main>
     <nav class="categories" aria-label="أقسام الطعام">
@@ -671,6 +764,7 @@
 
       <label for="phone">رقم الهاتف</label>
       <input id="phone" type="tel" inputmode="tel" placeholder="مثال: 01XXXXXXXXX" required>
+      <span class="error-msg" id="phoneError">⚠️ رقم الهاتف يجب أن يكون 11 رقم ويبدأ بـ 01</span>
 
       <label for="address">عنوان التوصيل</label>
       <textarea id="address" placeholder="المنطقة، الشارع، رقم العقار..." required></textarea>
@@ -792,6 +886,55 @@
     const checkoutBtn = document.getElementById("checkoutBtn");
     const checkoutModal = document.getElementById("checkoutModal");
     const successModal = document.getElementById("successModal");
+
+    // ====== دوال التحقق من المواعيد ورقم التليفون (تعديلات جديدة) ======
+    function isRestaurantOpen() {
+      const now = new Date();
+      const day = now.getDay(); // 0 = الأحد، 1 = الإثنين، ... 6 = السبت
+      const hours = now.getHours();
+
+      // يوم الأحد (0) = مغلق طول اليوم
+      if (day === 0) {
+        return { open: false, reason: "sunday" };
+      }
+
+      // مواعيد العمل: من 3 مساءً (15) لحد 3 صباحاً (3)
+      // يعني المطعم مفتوح لو الساعة >= 15 أو الساعة < 3
+      if (hours >= 15 || hours < 3) {
+        return { open: true, reason: null };
+      }
+
+      return { open: false, reason: "time" };
+    }
+
+    function updateClosedNotice() {
+      const notice = document.getElementById("closedNotice");
+      const message = document.getElementById("closedMessage");
+      const status = isRestaurantOpen();
+
+      if (!status.open) {
+        notice.classList.add("show");
+
+        if (status.reason === "sunday") {
+          message.innerHTML = "نعتذر، المطعم مغلق يوم الأحد.<br>نستقبلكم باقي أيام الأسبوع بإذن الله.";
+        } else if (status.reason === "time") {
+          message.innerHTML = "نعتذر، المطعم مغلق الآن خارج أوقات العمل.<br>المطعم يفتح الساعة 3 مساءً ويغلق الساعة 3 صباحاً.";
+        }
+      } else {
+        notice.classList.remove("show");
+      }
+    }
+
+    function validatePhone(phone) {
+      // لازم يكون 11 رقم بالضبط ويبدأ بـ 01
+      const cleaned = phone.replace(/\s+/g, "");
+      return /^01[0-9]{9}$/.test(cleaned);
+    }
+
+    // تحديث الإشعار كل دقيقة
+    updateClosedNotice();
+    setInterval(updateClosedNotice, 60000);
+    // ====== نهاية دوال التحقق ======
 
     function renderMenu() {
       const category = menu[currentCategory];
@@ -922,13 +1065,27 @@
     document.getElementById("closeCheckout").addEventListener("click", closeEverything);
     overlay.addEventListener("click", closeEverything);
 
+    // ====== التحقق من المواعيد عند الضغط على إتمام الطلب ======
     checkoutBtn.addEventListener("click", () => {
       if (!cart.length) return;
+
+      const status = isRestaurantOpen();
+      if (!status.open) {
+        updateClosedNotice(); // تأكد إن الإشعار ظاهر
+
+        const closedMsg = status.reason === "sunday"
+          ? "المطعم مغلق يوم الأحد. يرجى الطلب في باقي أيام الأسبوع."
+          : "المطعم مغلق الآن. مواعيد العمل: من 3 مساءً حتى 3 صباحاً.";
+
+        alert("🔒 " + closedMsg);
+        return;
+      }
 
       cartSidebar.classList.remove("open");
       checkoutModal.classList.add("show");
       overlay.classList.add("show");
     });
+    // ====== نهاية التحقق ======
 
     document.getElementById("orderForm").addEventListener("submit", async event => {
       event.preventDefault();
@@ -938,13 +1095,40 @@
         return;
       }
 
+      // ====== التحقق من المواعيد مرة تانية عند تأكيد الطلب ======
+      const status = isRestaurantOpen();
+      if (!status.open) {
+        updateClosedNotice();
+        const closedMsg = status.reason === "sunday"
+          ? "المطعم مغلق يوم الأحد."
+          : "المطعم مغلق الآن خارج أوقات العمل.";
+        alert("🔒 " + closedMsg);
+        return;
+      }
+
+      // ====== التحقق من رقم التليفون ======
+      const phoneInput = document.getElementById("phone");
+      const phoneError = document.getElementById("phoneError");
+      const phoneValue = phoneInput.value.trim();
+
+      if (!validatePhone(phoneValue)) {
+        phoneInput.classList.add("input-error");
+        phoneError.classList.add("show");
+        phoneInput.focus();
+        return;
+      } else {
+        phoneInput.classList.remove("input-error");
+        phoneError.classList.remove("show");
+      }
+      // ====== نهاية التحقق ======
+
       const submitButton = event.target.querySelector('button[type="submit"]');
       const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
       const orderData = {
         orderNumber: "CES-" + Date.now(),
         fullName: document.getElementById("fullName").value.trim(),
-        phone: document.getElementById("phone").value.trim(),
+        phone: phoneValue,
         address: document.getElementById("address").value.trim(),
 
         // الملاحظات التي كتبها العميل
@@ -990,6 +1174,13 @@
       }
     });
 
+    // ====== إزالة رسالة الخطأ عند الكتابة في خانة التليفون ======
+    document.getElementById("phone").addEventListener("input", function() {
+      this.classList.remove("input-error");
+      document.getElementById("phoneError").classList.remove("show");
+    });
+    // ====== نهاية إزالة الخطأ ======
+
     document.getElementById("successClose").addEventListener("click", closeEverything);
 
     renderMenu();
@@ -997,4 +1188,3 @@
   </script>
 </body>
 </html>
-```
