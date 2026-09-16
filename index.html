@@ -150,7 +150,6 @@
       font-weight: bold;
     }
 
-    /* ====== إشعار إغلاق المطعم (تعديل جديد) ====== */
     .closed-notice {
       display: none;
       background: #fff3cd;
@@ -204,7 +203,6 @@
       25% { transform: translateX(-5px); }
       75% { transform: translateX(5px); }
     }
-    /* ====== نهاية الإشعار ====== */
 
     main {
       max-width: 1180px;
@@ -566,7 +564,6 @@
       resize: vertical;
     }
 
-    /* رسالة خطأ رقم التليفون (تعديل جديد) */
     .input-error {
       border-color: var(--red) !important;
       box-shadow: 0 0 0 3px rgba(217, 45, 39, .15) !important;
@@ -640,6 +637,124 @@
       }
     }
 
+    .vodafone-cash-section {
+      display: none;
+      background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+      border: 2px solid #4caf50;
+      border-radius: 12px;
+      padding: 18px;
+      margin-top: 15px;
+    }
+
+    .vodafone-cash-section.show {
+      display: block;
+      animation: fadeIn .3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .vodafone-cash-section h4 {
+      margin: 0 0 12px;
+      color: #2e7d32;
+      font-size: 1.05rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .vodafone-cash-section .disclaimer {
+      background: #f8d7da;
+      border: 1px solid #f5c6cb;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 12px;
+      font-size: .88rem;
+      line-height: 1.6;
+      color: #721c24;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .vodafone-cash-section .info-box {
+      background: white;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+
+    .vodafone-cash-section .phone-number {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: var(--red);
+      text-align: center;
+      margin: 8px 0;
+      direction: ltr;
+    }
+
+    .vodafone-cash-section .recipient-name {
+      text-align: center;
+      font-weight: bold;
+      color: #2e7d32;
+      font-size: 1.05rem;
+      margin: 5px 0;
+    }
+
+    .vodafone-cash-section .order-total-display {
+      text-align: center;
+      font-weight: bold;
+      color: #1b5e20;
+      font-size: 1.1rem;
+      margin: 10px 0;
+      padding: 10px;
+      background: #e8f5e9;
+      border-radius: 8px;
+      border: 2px solid #4caf50;
+    }
+
+    .vodafone-cash-section .instructions {
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 12px;
+      font-size: .9rem;
+      line-height: 1.6;
+    }
+
+    .vodafone-cash-section .instructions strong {
+      color: #856404;
+    }
+
+    .whatsapp-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 16px;
+      background: #25d366;
+      color: white;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.05rem;
+      transition: .2s;
+      box-shadow: 0 4px 12px rgba(37, 211, 102, .3);
+    }
+
+    .whatsapp-btn:hover {
+      background: #128c7e;
+      transform: translateY(-2px);
+    }
+
+    .whatsapp-btn svg {
+      width: 24px;
+      height: 24px;
+      fill: white;
+    }
+
     @media (max-width: 520px) {
       .hero {
         min-height: 245px;
@@ -666,6 +781,14 @@
       }
 
       .closed-notice h3 { font-size: 1.05rem; }
+
+      .vodafone-cash-section {
+        padding: 15px;
+      }
+
+      .vodafone-cash-section .phone-number {
+        font-size: 1.15rem;
+      }
     }
   </style>
 </head>
@@ -698,7 +821,6 @@
     </div>
   </header>
 
-  <!-- ====== إشعار إغلاق المطعم (تعديل جديد) ====== -->
   <div class="closed-notice" id="closedNotice">
     <span class="icon">🔒</span>
     <h3>المطعم مغلق الآن</h3>
@@ -708,7 +830,6 @@
       من الساعة 3:00 مساءً حتى 3:00 صباحاً
     </div>
   </div>
-  <!-- ====== نهاية الإشعار ====== -->
 
   <main>
     <nav class="categories" aria-label="أقسام الطعام">
@@ -765,15 +886,49 @@
       <label for="address">عنوان التوصيل</label>
       <textarea id="address" placeholder="المنطقة، الشارع، رقم العقار..." required></textarea>
 
-      <!-- خانة الملاحظات الجديدة -->
       <label for="notes">ملاحظات على الطلب</label>
       <textarea id="notes" placeholder="مثال: بدون كاتشب، زيادة جبنة، بدون بصل..."></textarea>
 
       <label for="payment">طريقة الدفع</label>
       <select id="payment" required>
         <option value="" selected disabled>اختر طريقة الدفع</option>
-        <option>الدفع عند الاستلام</option>
+        <option value="cash">الدفع عند الاستلام</option>
+        <option value="vodafone">Vodafone Cash</option>
       </select>
+
+      <div class="vodafone-cash-section" id="vodafoneCashSection">
+        <h4>💚 الدفع عبر Vodafone Cash</h4>
+
+        <div class="disclaimer">
+          ⚠️ تنبيه هام: المطعم غير مسؤول في حالة التحويل الخاطئ
+        </div>
+
+        <div class="order-total-display">
+          💰 قيمة الطلب المطلوب تحويلها: <span id="vodafoneOrderTotal">0</span> جنيه
+        </div>
+
+        <div class="info-box">
+          <p style="margin: 0 0 8px; text-align: center; font-weight: bold;">حوّل قيمة الطلب على:</p>
+          <div class="phone-number">01031198587</div>
+          <div class="recipient-name">باسم: سلطان</div>
+        </div>
+
+        <div class="instructions">
+          <strong>📋 التعليمات:</strong><br>
+          1. افتح تطبيق فودافون كاش وحوّل قيمة الطلب<br>
+          2. تأكد من الاسم (سلطان) قبل التأكيد<br>
+          3. التقط سكرين شوت من عملية التحويل<br>
+          4. اضغط الزر أدناه لإرسال الصورة عبر واتساب<br>
+          5.تاكد من ارسال الصوره عبر واتساب قبل الضغط على تاكيد الطلب
+        </div>
+
+        <a href="#" class="whatsapp-btn" id="whatsappBtn" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+          إرسال صورة التحويل عبر واتساب
+        </a>
+      </div>
 
       <button class="submit-order" type="submit">تأكيد الطلب</button>
     </form>
@@ -788,8 +943,9 @@
 
   <script>
     const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbygsDqIAiAiUeI7qFyQQTzqqgC3lPrilaxCg70OYtGddtwGR8YY-dc7gLh_lnWTdQg/exec";
+    const WHATSAPP_NUMBER = "201204857565";
 
-     const PRODUCT_IMAGES = {
+    const PRODUCT_IMAGES = {
       crepeStrips: "HH.jpeg",
       crepePane: "pane.jpeg",
       crepeShish: "mix.jpeg",
@@ -803,12 +959,10 @@
       pizzaMeat: "pizza.jpeg",
       pizzaCheese: "piza cheez.jpeg",
 
-      
       extrasCrepePotato: "potato.png",
       extrasPotatoPacket: "باكت بطاطس.png",
       extrasCheddarSauce: "شيدر.png",
       extrasKetchup: "كاتشب.png"
-      
     };
 
     const menu = {
@@ -874,7 +1028,6 @@
         ]
       },
 
-      
       extras: {
         title: "إضافات السلطان",
         description: "اختار الإضافات اللي تحبها مع طلبك",
@@ -885,7 +1038,6 @@
           { id: "e4", name: "كاتشب", description: "5 كياس كاتشب صغيرة.", price: 5, image: PRODUCT_IMAGES.extrasKetchup }
         ]
       }
-      
     };
 
     let currentCategory = "crepe";
@@ -903,19 +1055,15 @@
     const checkoutModal = document.getElementById("checkoutModal");
     const successModal = document.getElementById("successModal");
 
-    // ====== دوال التحقق من المواعيد ورقم التليفون (تعديلات جديدة) ======
     function isRestaurantOpen() {
       const now = new Date();
-      const day = now.getDay(); // 0 = الأحد، 1 = الإثنين، ... 6 = السبت
+      const day = now.getDay();
       const hours = now.getHours();
 
-      // يوم الأحد (0) = مغلق طول اليوم
       if (day === 0) {
         return { open: false, reason: "sunday" };
       }
 
-      // مواعيد العمل: من 3 مساءً (15) لحد 3 صباحاً (3)
-      // يعني المطعم مفتوح لو الساعة >= 15 أو الساعة < 3
       if (hours >= 15 || hours < 3) {
         return { open: true, reason: null };
       }
@@ -942,15 +1090,12 @@
     }
 
     function validatePhone(phone) {
-      
       const cleaned = phone.replace(/\s+/g, "");
       return /^01[0-9]{9}$/.test(cleaned);
     }
 
-    // تحديث الإشعار كل دقيقة
     updateClosedNotice();
     setInterval(updateClosedNotice, 60000);
-    // ====== نهاية دوال التحقق ======
 
     function renderMenu() {
       const category = menu[currentCategory];
@@ -1081,13 +1226,12 @@
     document.getElementById("closeCheckout").addEventListener("click", closeEverything);
     overlay.addEventListener("click", closeEverything);
 
-    // ====== التحقق من المواعيد عند الضغط على إتمام الطلب ======
     checkoutBtn.addEventListener("click", () => {
       if (!cart.length) return;
 
       const status = isRestaurantOpen();
       if (!status.open) {
-        updateClosedNotice(); // تأكد إن الإشعار ظاهر
+        updateClosedNotice();
 
         const closedMsg = status.reason === "sunday"
           ? "المطعم مغلق يوم الأحد. يرجى الطلب في باقي أيام الأسبوع."
@@ -1101,7 +1245,32 @@
       checkoutModal.classList.add("show");
       overlay.classList.add("show");
     });
-    // ====== نهاية التحقق ======
+
+    const paymentSelect = document.getElementById("payment");
+    const vodafoneCashSection = document.getElementById("vodafoneCashSection");
+    const whatsappBtn = document.getElementById("whatsappBtn");
+    const vodafoneOrderTotal = document.getElementById("vodafoneOrderTotal");
+
+    function getCartTotal() {
+      return cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    }
+
+    function updateVodafoneSection() {
+      const total = getCartTotal();
+      vodafoneOrderTotal.textContent = total;
+
+      const message = `مرحباً، لقد قمت بتحويل مبلغ ${total} جنيه لطلب من كريب السلطان. مرفق صورة التحويل.`;
+      whatsappBtn.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+    }
+
+    paymentSelect.addEventListener("change", function() {
+      if (this.value === "vodafone") {
+        vodafoneCashSection.classList.add("show");
+        updateVodafoneSection();
+      } else {
+        vodafoneCashSection.classList.remove("show");
+      }
+    });
 
     document.getElementById("orderForm").addEventListener("submit", async event => {
       event.preventDefault();
@@ -1111,7 +1280,6 @@
         return;
       }
 
-      // ====== التحقق من المواعيد مرة تانية عند تأكيد الطلب ======
       const status = isRestaurantOpen();
       if (!status.open) {
         updateClosedNotice();
@@ -1122,7 +1290,6 @@
         return;
       }
 
-      // ====== التحقق من رقم التليفون ======
       const phoneInput = document.getElementById("phone");
       const phoneError = document.getElementById("phoneError");
       const phoneValue = phoneInput.value.trim();
@@ -1136,21 +1303,23 @@
         phoneInput.classList.remove("input-error");
         phoneError.classList.remove("show");
       }
-      // ====== نهاية التحقق ======
+
+      const paymentMethod = document.getElementById("payment").value;
+
+      if (paymentMethod === "vodafone") {
+        updateVodafoneSection();
+      }
 
       const submitButton = event.target.querySelector('button[type="submit"]');
-      const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      const total = getCartTotal();
 
       const orderData = {
         orderNumber: "CES-" + Date.now(),
         fullName: document.getElementById("fullName").value.trim(),
         phone: phoneValue,
         address: document.getElementById("address").value.trim(),
-
-        // الملاحظات التي كتبها العميل
         notes: document.getElementById("notes").value.trim(),
-
-        payment: document.getElementById("payment").value,
+        payment: paymentMethod === "vodafone" ? "Vodafone Cash" : "الدفع عند الاستلام",
         items: cart.map(item => ({
           name: item.name,
           price: item.price,
@@ -1176,6 +1345,8 @@
         renderCart();
         event.target.reset();
 
+        vodafoneCashSection.classList.remove("show");
+
         checkoutModal.classList.remove("show");
         successModal.classList.add("show");
         overlay.classList.add("show");
@@ -1190,12 +1361,10 @@
       }
     });
 
-    // ====== إزالة رسالة الخطأ عند الكتابة في خانة التليفون ======
     document.getElementById("phone").addEventListener("input", function() {
       this.classList.remove("input-error");
       document.getElementById("phoneError").classList.remove("show");
     });
-    
 
     document.getElementById("successClose").addEventListener("click", closeEverything);
 
