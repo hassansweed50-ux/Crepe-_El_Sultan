@@ -14,7 +14,6 @@
       --green: #228b55;
       --shadow: 0 14px 35px rgba(44, 20, 10, .13);
 
-      /* Light Mode Colors */
       --bg: var(--cream);
       --card-bg: #ffffff;
       --text-primary: var(--dark);
@@ -32,7 +31,6 @@
       );
     }
 
-    /* Dark Mode */
     body.dark {
       --bg: #1a1411;
       --card-bg: #2a1f1a;
@@ -109,11 +107,7 @@
       gap: 10px;
     }
 
-    .topbar-actions {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
+    .topbar-actions { display: flex; gap: 8px; align-items: center; }
 
     .brand {
       display: flex;
@@ -135,7 +129,6 @@
       box-shadow: 0 5px 15px rgba(0,0,0,.18);
     }
 
-    /* Theme Toggle Button */
     .theme-toggle {
       width: 46px;
       height: 46px;
@@ -151,9 +144,7 @@
       overflow: hidden;
     }
 
-    .theme-toggle:hover {
-      transform: translateY(-2px) rotate(8deg);
-    }
+    .theme-toggle:hover { transform: translateY(-2px) rotate(8deg); }
 
     .theme-toggle .icon-sun,
     .theme-toggle .icon-moon {
@@ -161,30 +152,12 @@
       transition: transform .4s ease, opacity .4s ease;
     }
 
-    .theme-toggle .icon-moon {
-      opacity: 1;
-      transform: translateY(0) rotate(0);
-    }
+    .theme-toggle .icon-moon { opacity: 1; transform: translateY(0) rotate(0); }
+    .theme-toggle .icon-sun { opacity: 0; transform: translateY(20px) rotate(-90deg); }
 
-    .theme-toggle .icon-sun {
-      opacity: 0;
-      transform: translateY(20px) rotate(-90deg);
-    }
-
-    body.dark .theme-toggle {
-      background: var(--card-bg);
-      color: var(--orange);
-    }
-
-    body.dark .theme-toggle .icon-moon {
-      opacity: 0;
-      transform: translateY(-20px) rotate(90deg);
-    }
-
-    body.dark .theme-toggle .icon-sun {
-      opacity: 1;
-      transform: translateY(0) rotate(0);
-    }
+    body.dark .theme-toggle { background: var(--card-bg); color: var(--orange); }
+    body.dark .theme-toggle .icon-moon { opacity: 0; transform: translateY(-20px) rotate(90deg); }
+    body.dark .theme-toggle .icon-sun { opacity: 1; transform: translateY(0) rotate(0); }
 
     .cart-toggle {
       padding: 11px 16px;
@@ -196,10 +169,7 @@
       transition: background .3s, color .3s;
     }
 
-    body.dark .cart-toggle {
-      background: var(--card-bg);
-      color: var(--text-primary);
-    }
+    body.dark .cart-toggle { background: var(--card-bg); color: var(--text-primary); }
 
     .cart-count {
       display: inline-grid;
@@ -213,10 +183,258 @@
       font-size: .75rem;
     }
 
-    .welcome {
-      text-align: center;
-      margin-top: 53px;
+    /* ====== Gift Button ====== */
+    .gift-btn {
+      position: relative;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff6b9d, #c44dff);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+      box-shadow: 0 4px 13px rgba(196, 77, 255, .4);
+      transition: transform .3s, box-shadow .3s;
+      overflow: visible;
     }
+
+    .gift-btn:hover {
+      transform: scale(1.1);
+    }
+
+    /* أنيميشن التنطيط */
+    .gift-btn.animate {
+      animation: giftBounce 1.4s ease-in-out infinite;
+    }
+
+    .gift-btn.animate::before {
+      content: "";
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff6b9d, #c44dff, #ffb86c, #ff6b9d);
+      background-size: 300% 300%;
+      z-index: -1;
+      animation: giftGlow 2s ease-in-out infinite, giftGradient 3s linear infinite;
+      filter: blur(8px);
+      opacity: .8;
+    }
+
+    /* نجمة صغيرة فوق الهدية */
+    .gift-btn.animate::after {
+      content: "✨";
+      position: absolute;
+      top: -10px;
+      right: -6px;
+      font-size: 16px;
+      animation: sparkleTwinkle 1s ease-in-out infinite;
+    }
+
+    @keyframes giftBounce {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      15% { transform: translateY(-10px) rotate(-10deg); }
+      30% { transform: translateY(0) rotate(0deg); }
+      45% { transform: translateY(-6px) rotate(10deg); }
+      60% { transform: translateY(0) rotate(0deg); }
+    }
+
+    @keyframes giftGlow {
+      0%, 100% { opacity: .5; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    @keyframes giftGradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes sparkleTwinkle {
+      0%, 100% { opacity: 1; transform: scale(1) rotate(0deg); }
+      50% { opacity: .3; transform: scale(.7) rotate(180deg); }
+    }
+
+    /* ====== Gift Modal ====== */
+    .gift-modal {
+      text-align: center;
+      background: linear-gradient(135deg, #fff5f9, #f5f0ff, #fff0e6);
+      border: 3px solid transparent;
+      background-clip: padding-box;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gift-modal::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: 
+        radial-gradient(circle at 20% 20%, rgba(255, 107, 157, .15) 0%, transparent 40%),
+        radial-gradient(circle at 80% 30%, rgba(196, 77, 255, .15) 0%, transparent 40%),
+        radial-gradient(circle at 50% 90%, rgba(255, 184, 108, .2) 0%, transparent 40%);
+      pointer-events: none;
+    }
+
+    body.dark .gift-modal {
+      background: linear-gradient(135deg, #2a1f2a, #1f1a2e, #2a2018);
+    }
+
+    .gift-modal > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .gift-modal-icon {
+      font-size: 75px;
+      line-height: 1;
+      margin-bottom: 5px;
+      animation: giftModalBounce 1.2s ease-in-out infinite;
+      display: inline-block;
+    }
+
+    @keyframes giftModalBounce {
+      0%, 100% { transform: translateY(0) scale(1) rotate(0deg); }
+      25% { transform: translateY(-12px) scale(1.08) rotate(-5deg); }
+      50% { transform: translateY(0) scale(1) rotate(0deg); }
+      75% { transform: translateY(-8px) scale(1.05) rotate(5deg); }
+    }
+
+    .gift-modal h2 {
+      background: linear-gradient(135deg, #ff6b9d, #c44dff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      font-size: 1.5rem;
+      margin: 5px 0 8px;
+    }
+
+    body.dark .gift-modal h2 {
+      background: linear-gradient(135deg, #ff8fb3, #d77fff);
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+
+    .gift-modal-subtitle {
+      color: var(--text-secondary);
+      margin: 0 0 15px;
+      font-size: .95rem;
+    }
+
+    .gift-code-label {
+      font-size: .85rem;
+      color: var(--text-muted);
+      margin: 0 0 6px;
+      font-weight: bold;
+    }
+
+    .gift-code-box {
+      background: linear-gradient(135deg, #ff6b9d, #c44dff);
+      color: white;
+      padding: 16px 20px;
+      border-radius: 14px;
+      font-size: 2.2rem;
+      font-weight: bold;
+      letter-spacing: 10px;
+      margin: 0 auto 15px;
+      max-width: 240px;
+      box-shadow: 0 8px 24px rgba(196, 77, 255, .4);
+      text-shadow: 0 2px 4px rgba(0,0,0,.2);
+      position: relative;
+      animation: codePulse 2s ease-in-out infinite;
+      font-family: 'Courier New', monospace;
+      direction: ltr;
+    }
+
+    @keyframes codePulse {
+      0%, 100% { box-shadow: 0 8px 24px rgba(196, 77, 255, .4); transform: scale(1); }
+      50% { box-shadow: 0 10px 32px rgba(255, 107, 157, .6); transform: scale(1.03); }
+    }
+
+    .gift-instruction {
+      background: rgba(255, 255, 255, .7);
+      border: 2px dashed #c44dff;
+      border-radius: 12px;
+      padding: 12px 15px;
+      margin: 0 0 15px;
+      color: var(--text-primary);
+      font-size: .95rem;
+      line-height: 1.7;
+    }
+
+    body.dark .gift-instruction {
+      background: rgba(60, 45, 70, .5);
+    }
+
+    .apply-highlight {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--green), #1a6d42);
+      color: white;
+      padding: 3px 12px;
+      border-radius: 8px;
+      font-weight: bold;
+      margin: 0 3px;
+      box-shadow: 0 3px 8px rgba(34, 139, 85, .3);
+    }
+
+    .have-fun {
+      font-family: 'Georgia', serif;
+      font-size: 1.6rem;
+      font-weight: bold;
+      font-style: italic;
+      background: linear-gradient(90deg, #ff6b9d, #c44dff, #ffb86c, #ff6b9d);
+      background-size: 300% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      margin: 10px 0 18px;
+      animation: haveFunShine 3s linear infinite;
+      letter-spacing: 1px;
+    }
+
+    @keyframes haveFunShine {
+      0% { background-position: 0% center; }
+      100% { background-position: 300% center; }
+    }
+
+    .gift-close-btn {
+      padding: 13px 30px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #ff6b9d, #c44dff);
+      color: white;
+      font-weight: bold;
+      font-size: 1rem;
+      box-shadow: 0 6px 18px rgba(196, 77, 255, .35);
+      transition: .2s;
+    }
+
+    .gift-close-btn:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 8px 22px rgba(196, 77, 255, .5);
+    }
+
+    /* Confetti Animation inside modal */
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      top: -20px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .gift-modal.show .confetti {
+      animation: confettiFall 3s linear infinite;
+    }
+
+    @keyframes confettiFall {
+      0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(500px) rotate(720deg); opacity: 0; }
+    }
+
+    .welcome { text-align: center; margin-top: 53px; }
 
     .welcome h1 {
       margin: 0;
@@ -224,11 +442,7 @@
       text-shadow: 0 3px 1px rgba(0,0,0,.15);
     }
 
-    .welcome p {
-      font-size: 1.08rem;
-      margin: 14px 0 0;
-      opacity: .95;
-    }
+    .welcome p { font-size: 1.08rem; margin: 14px 0 0; opacity: .95; }
 
     .restaurant-info {
       display: flex;
@@ -265,27 +479,11 @@
       animation: shake .5s ease;
     }
 
-    .closed-notice.show {
-      display: block;
-    }
+    .closed-notice.show { display: block; }
 
-    .closed-notice .icon {
-      font-size: 1.8rem;
-      display: block;
-      margin-bottom: 8px;
-    }
-
-    .closed-notice h3 {
-      margin: 0 0 6px;
-      color: #b85c00;
-      font-size: 1.2rem;
-    }
-
-    .closed-notice p {
-      margin: 0;
-      line-height: 1.7;
-      font-size: .95rem;
-    }
+    .closed-notice .icon { font-size: 1.8rem; display: block; margin-bottom: 8px; }
+    .closed-notice h3 { margin: 0 0 6px; color: #b85c00; font-size: 1.2rem; }
+    .closed-notice p { margin: 0; line-height: 1.7; font-size: .95rem; }
 
     .closed-notice .hours {
       margin-top: 10px;
@@ -345,21 +543,9 @@
     .category[data-category="pizza"] { grid-area: pizza; }
     .category[data-category="extras"] { grid-area: extras; }
 
-    .section-heading {
-      margin: 8px 0 20px;
-      text-align: center;
-    }
-
-    .section-heading h2 {
-      margin: 0;
-      color: var(--red);
-      font-size: 1.8rem;
-    }
-
-    .section-heading p {
-      color: var(--text-muted);
-      margin: 8px 0 0;
-    }
+    .section-heading { margin: 8px 0 20px; text-align: center; }
+    .section-heading h2 { margin: 0; color: var(--red); font-size: 1.8rem; }
+    .section-heading p { color: var(--text-muted); margin: 8px 0 0; }
 
     .menu-grid {
       display: grid;
@@ -374,6 +560,9 @@
       box-shadow: var(--shadow);
       transition: transform .2s, box-shadow .2s, background .3s;
       animation: cardEnter .42s ease both;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
     }
 
     .food-card:hover {
@@ -381,9 +570,8 @@
       box-shadow: 0 19px 37px rgba(44, 20, 10, .18);
     }
 
-    body.dark .food-card:hover {
-      box-shadow: 0 19px 37px rgba(0, 0, 0, .5);
-    }
+    body.dark .food-card:hover { box-shadow: 0 19px 37px rgba(0, 0, 0, .5); }
+    .food-card:active { transform: scale(.985); }
 
     .food-image {
       height: 155px;
@@ -392,9 +580,7 @@
       overflow: hidden;
     }
 
-    body.dark .food-image {
-      background: linear-gradient(135deg, #4a3a25, #6b4e2b);
-    }
+    body.dark .food-image { background: linear-gradient(135deg, #4a3a25, #6b4e2b); }
 
     .food-image img {
       display: block;
@@ -405,9 +591,7 @@
       transition: transform .35s ease;
     }
 
-    .food-card:hover .food-image img {
-      transform: scale(1.06);
-    }
+    .food-card:hover .food-image img { transform: scale(1.06); }
 
     .food-image::after {
       content: "مطعم السلطان";
@@ -422,13 +606,25 @@
       z-index: 1;
     }
 
-    .food-content { padding: 16px; }
-
-    .food-content h3 {
-      margin: 0 0 8px;
-      font-size: 1.12rem;
-      color: var(--text-primary);
+    .food-image .customize-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(34, 139, 85, .92);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 99px;
+      font-size: .72rem;
+      font-weight: bold;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 3px 8px rgba(0,0,0,.2);
     }
+
+    .food-content { padding: 16px; flex: 1; display: flex; flex-direction: column; }
+    .food-content h3 { margin: 0 0 8px; font-size: 1.12rem; color: var(--text-primary); }
 
     .food-content p {
       min-height: 44px;
@@ -436,6 +632,7 @@
       line-height: 1.6;
       font-size: .9rem;
       margin: 0 0 14px;
+      flex: 1;
     }
 
     .card-footer {
@@ -445,11 +642,7 @@
       align-items: center;
     }
 
-    .price {
-      color: var(--red);
-      font-weight: bold;
-      white-space: nowrap;
-    }
+    .price { color: var(--red); font-weight: bold; white-space: nowrap; }
 
     .add-btn {
       padding: 9px 12px;
@@ -472,10 +665,7 @@
       z-index: 20;
     }
 
-    .overlay.show {
-      opacity: 1;
-      visibility: visible;
-    }
+    .overlay.show { opacity: 1; visibility: visible; }
 
     .cart-sidebar {
       position: fixed;
@@ -493,10 +683,7 @@
       transition: transform .28s ease, background .3s;
     }
 
-    body.dark .cart-sidebar {
-      box-shadow: -12px 0 32px rgba(0,0,0,.6);
-    }
-
+    body.dark .cart-sidebar { box-shadow: -12px 0 32px rgba(0,0,0,.6); }
     .cart-sidebar.open { transform: translateX(0); }
 
     .cart-header {
@@ -507,10 +694,7 @@
       border-bottom: 1px solid var(--border);
     }
 
-    .cart-header h2 {
-      margin: 0;
-      color: var(--red);
-    }
+    .cart-header h2 { margin: 0; color: var(--red); }
 
     .close-btn {
       width: 35px;
@@ -522,16 +706,9 @@
       transition: background .3s, color .3s;
     }
 
-    body.dark .close-btn {
-      background: #3d2e22;
-      color: var(--text-primary);
-    }
+    body.dark .close-btn { background: #3d2e22; color: var(--text-primary); }
 
-    .cart-items {
-      overflow-y: auto;
-      flex: 1;
-      padding: 13px 0;
-    }
+    .cart-items { overflow-y: auto; flex: 1; padding: 13px 0; }
 
     .empty-cart {
       text-align: center;
@@ -567,21 +744,13 @@
 
     .cart-item h4 {
       margin: 0 0 5px;
-      font-size: .94rem;
+      font-size: .92rem;
       color: var(--text-primary);
+      line-height: 1.4;
     }
 
-    .cart-item small {
-      color: var(--red);
-      font-weight: bold;
-    }
-
-    .quantity {
-      display: flex;
-      direction: ltr;
-      align-items: center;
-      gap: 6px;
-    }
+    .cart-item small { color: var(--red); font-weight: bold; }
+    .quantity { display: flex; direction: ltr; align-items: center; gap: 6px; }
 
     .quantity button {
       width: 26px;
@@ -593,14 +762,8 @@
       transition: background .3s;
     }
 
-    body.dark .quantity button {
-      background: #3d2e22;
-    }
-
-    .cart-footer {
-      padding-top: 17px;
-      border-top: 1px solid var(--border);
-    }
+    body.dark .quantity button { background: #3d2e22; }
+    .cart-footer { padding-top: 17px; border-top: 1px solid var(--border); }
 
     .total {
       display: flex;
@@ -621,14 +784,8 @@
       font-size: 1rem;
     }
 
-    .checkout-btn:disabled {
-      background: #c6b9b3;
-      cursor: not-allowed;
-    }
-
-    body.dark .checkout-btn:disabled {
-      background: #4a3830;
-    }
+    .checkout-btn:disabled { background: #c6b9b3; cursor: not-allowed; }
+    body.dark .checkout-btn:disabled { background: #4a3830; }
 
     .modal {
       position: fixed;
@@ -648,9 +805,7 @@
       box-shadow: 0 20px 55px rgba(0,0,0,.25);
     }
 
-    body.dark .modal {
-      box-shadow: 0 20px 55px rgba(0,0,0,.7);
-    }
+    body.dark .modal { box-shadow: 0 20px 55px rgba(0,0,0,.7); }
 
     .modal.show {
       opacity: 1;
@@ -658,17 +813,8 @@
       transform: translate(-50%, -50%) scale(1);
     }
 
-    .modal h2 {
-      color: var(--red);
-      margin: 0 0 7px;
-      text-align: center;
-    }
-
-    .modal-intro {
-      color: var(--text-muted);
-      text-align: center;
-      margin: 0 0 20px;
-    }
+    .modal h2 { color: var(--red); margin: 0 0 7px; text-align: center; }
+    .modal-intro { color: var(--text-muted); text-align: center; margin: 0 0 20px; }
 
     label {
       display: block;
@@ -689,41 +835,23 @@
       transition: border-color .3s, background .3s;
     }
 
-    input::placeholder, textarea::placeholder {
-      color: var(--text-muted);
-    }
-
-    select option {
-      background: var(--card-bg);
-      color: var(--text-primary);
-    }
+    input::placeholder, textarea::placeholder { color: var(--text-muted); }
+    select option { background: var(--card-bg); color: var(--text-primary); }
 
     input:focus, textarea:focus, select:focus {
       border-color: var(--orange);
       box-shadow: 0 0 0 3px rgba(255,138,24,.15);
     }
 
-    textarea {
-      min-height: 80px;
-      resize: vertical;
-    }
+    textarea { min-height: 80px; resize: vertical; }
 
     .input-error {
       border-color: var(--red) !important;
       box-shadow: 0 0 0 3px rgba(217, 45, 39, .15) !important;
     }
 
-    .error-msg {
-      display: none;
-      color: var(--red);
-      font-size: .85rem;
-      margin-top: 5px;
-      font-weight: bold;
-    }
-
-    .error-msg.show {
-      display: block;
-    }
+    .error-msg { display: none; color: var(--red); font-size: .85rem; margin-top: 5px; font-weight: bold; }
+    .error-msg.show { display: block; }
 
     .submit-order {
       width: 100%;
@@ -750,15 +878,8 @@
       font-size: 39px;
     }
 
-    body.dark .success-icon {
-      background: #1e3d2a;
-      color: #4caf50;
-    }
-
-    .success-modal p {
-      line-height: 1.8;
-      color: var(--text-secondary);
-    }
+    body.dark .success-icon { background: #1e3d2a; color: #4caf50; }
+    .success-modal p { line-height: 1.8; color: var(--text-secondary); }
 
     .success-modal button {
       padding: 11px 27px;
@@ -769,23 +890,335 @@
       font-weight: bold;
     }
 
-    @keyframes heroZoom {
-      from { transform: scale(1); }
-      to { transform: scale(1.07); }
-    }
+    @keyframes heroZoom { from { transform: scale(1); } to { transform: scale(1.07); } }
 
     @keyframes cardEnter {
-      from {
-        opacity: 0;
-        transform: translateY(12px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
+    /* ====== Product Modal (Customization) ====== */
+    .product-modal {
+      padding: 0;
+      max-height: 92vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-modal.show { animation: modalPop .32s ease both; }
+
+    @keyframes modalPop {
+      from { opacity: 0; transform: translate(-50%, -46%) scale(.9); }
+      to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    }
+
+    .pm-image {
+      height: 220px;
+      border-radius: 21px 21px 0 0;
+      overflow: hidden;
+      background: linear-gradient(135deg, #fff1cb, #ffc563);
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    body.dark .pm-image { background: linear-gradient(135deg, #4a3a25, #6b4e2b); }
+    .pm-image img { width: 100%; height: 100%; object-fit: cover; }
+
+    .pm-image::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 55%, rgba(0,0,0,.45));
+      pointer-events: none;
+    }
+
+    .pm-image-title {
+      position: absolute;
+      bottom: 14px;
+      right: 18px;
+      left: 18px;
+      color: white;
+      z-index: 2;
+      text-shadow: 0 2px 8px rgba(0,0,0,.4);
+    }
+
+    .pm-image-title h3 { margin: 0; font-size: 1.35rem; font-weight: bold; }
+    .pm-image-title p { margin: 4px 0 0; font-size: .88rem; opacity: .95; }
+
+    .pm-close-btn {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.95);
+      color: var(--dark);
+      font-size: 1.3rem;
+      z-index: 3;
+      box-shadow: 0 4px 12px rgba(0,0,0,.18);
+      transition: .2s;
+    }
+
+    .pm-close-btn:hover { transform: rotate(90deg); }
+
+    .pm-scroll {
+      overflow-y: auto;
+      flex: 1;
+      padding: 20px 24px 6px;
+    }
+
+    .pm-section {
+      margin-bottom: 20px;
+      padding-bottom: 18px;
+      border-bottom: 1px dashed var(--border);
+    }
+
+    .pm-section:last-child { border-bottom: none; }
+
+    .pm-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 0 0 12px;
+      font-weight: bold;
+      color: var(--text-primary);
+      font-size: .98rem;
+    }
+
+    .pm-label .label-icon {
+      display: inline-grid;
+      place-items: center;
+      width: 26px;
+      height: 26px;
+      background: linear-gradient(135deg, var(--orange), var(--red));
+      color: white;
+      border-radius: 50%;
+      font-size: .8rem;
+    }
+
+    .pm-sizes {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .pm-size-btn {
+      padding: 14px 12px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      background: var(--input-bg);
+      color: var(--text-primary);
+      text-align: center;
+      transition: all .2s;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .pm-size-btn:hover:not(.active) {
+      border-color: var(--orange);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(255,138,24,.18);
+    }
+
+    .pm-size-btn.active {
+      border-color: var(--red);
+      background: linear-gradient(135deg, var(--red), #b81e1a);
+      color: white;
+      box-shadow: 0 6px 18px rgba(217,45,39,.3);
+    }
+
+    .pm-size-btn .size-label { font-weight: bold; font-size: .95rem; }
+    .pm-size-btn .size-price { font-size: .85rem; opacity: .9; }
+    .pm-size-btn.active .size-price { opacity: 1; font-weight: bold; }
+
+    .pm-mix-select {
+      width: 100%;
+      padding: 13px;
+      border-radius: 10px;
+      border: 2px solid var(--border);
+      background: var(--input-bg);
+      color: var(--text-primary);
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .pm-mix-select:focus {
+      border-color: var(--orange);
+      box-shadow: 0 0 0 3px rgba(255,138,24,.15);
+    }
+
+    .pm-mix-hint {
+      font-size: .78rem;
+      color: var(--text-muted);
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .pm-checkbox {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 14px;
+      border: 2px solid var(--border);
+      border-radius: 11px;
+      background: var(--input-bg);
+      cursor: pointer;
+      transition: all .2s;
+      font-weight: bold;
+      margin-bottom: 8px;
+      user-select: none;
+    }
+
+    .pm-checkbox:last-child { margin-bottom: 0; }
+
+    .pm-checkbox:hover {
+      border-color: var(--orange);
+      transform: translateY(-1px);
+    }
+
+    .pm-checkbox.active {
+      border-color: var(--green);
+      background: rgba(34, 139, 85, .1);
+    }
+
+    body.dark .pm-checkbox.active { background: rgba(34, 139, 85, .2); }
+
+    .pm-checkbox input { display: none; }
+
+    .pm-checkbox-main {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-primary);
+      font-size: .95rem;
+      flex: 1;
+    }
+
+    .pm-checkbox-check {
+      width: 22px;
+      height: 22px;
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      display: grid;
+      place-items: center;
+      transition: .2s;
+      flex-shrink: 0;
+    }
+
+    .pm-checkbox.active .pm-checkbox-check {
+      background: var(--green);
+      border-color: var(--green);
+      color: white;
+    }
+
+    .pm-checkbox.active .pm-checkbox-check::after {
+      content: "✓";
+      font-weight: bold;
+    }
+
+    .pm-extra-price {
+      color: var(--green);
+      font-size: .85rem;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .pm-drink-img {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      object-fit: cover;
+      background: linear-gradient(135deg, #fff1cb, #ffc563);
+      flex-shrink: 0;
+    }
+
+    body.dark .pm-drink-img {
+      background: linear-gradient(135deg, #4a3a25, #6b4e2b);
+    }
+
+    .pm-quantity {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      justify-content: center;
+      padding: 8px 0;
+    }
+
+    .pm-qty-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--red);
+      color: white;
+      font-size: 1.4rem;
+      font-weight: bold;
+      transition: .2s;
+      box-shadow: 0 4px 12px rgba(217,45,39,.25);
+    }
+
+    .pm-qty-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(217,45,39,.35);
+    }
+
+    .pm-qty-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      min-width: 35px;
+      text-align: center;
+      color: var(--text-primary);
+    }
+
+    .pm-footer {
+      padding: 14px 24px 18px;
+      border-top: 2px solid var(--border);
+      background: var(--card-bg);
+      border-radius: 0 0 21px 21px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .pm-total-label {
+      font-size: .85rem;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .pm-total-value {
+      font-size: 1.35rem;
+      font-weight: bold;
+      color: var(--red);
+    }
+
+    .pm-add-btn {
+      padding: 14px 22px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--green), #1a6d42);
+      color: white;
+      font-weight: bold;
+      font-size: .98rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: .2s;
+      box-shadow: 0 6px 18px rgba(34, 139, 85, .3);
+    }
+
+    .pm-add-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(34, 139, 85, .4);
+    }
+
+    /* ====== Vodafone Cash Section ====== */
     .vodafone-cash-section {
       display: none;
       background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
@@ -800,10 +1233,7 @@
       border-color: #4caf50;
     }
 
-    .vodafone-cash-section.show {
-      display: block;
-      animation: fadeIn .3s ease;
-    }
+    .vodafone-cash-section.show { display: block; animation: fadeIn .3s ease; }
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(-10px); }
@@ -819,9 +1249,7 @@
       gap: 8px;
     }
 
-    body.dark .vodafone-cash-section h4 {
-      color: #66bb6a;
-    }
+    body.dark .vodafone-cash-section h4 { color: #66bb6a; }
 
     .vodafone-cash-section .disclaimer {
       background: #f8d7da;
@@ -849,9 +1277,7 @@
       margin-bottom: 12px;
     }
 
-    body.dark .vodafone-cash-section .info-box {
-      background: var(--input-bg);
-    }
+    body.dark .vodafone-cash-section .info-box { background: var(--input-bg); }
 
     .vodafone-cash-section .phone-number {
       font-size: 1.3rem;
@@ -870,9 +1296,7 @@
       margin: 5px 0;
     }
 
-    body.dark .vodafone-cash-section .recipient-name {
-      color: #66bb6a;
-    }
+    body.dark .vodafone-cash-section .recipient-name { color: #66bb6a; }
 
     .vodafone-cash-section .order-total-display {
       text-align: center;
@@ -909,13 +1333,8 @@
       color: #ffd54f;
     }
 
-    .vodafone-cash-section .instructions strong {
-      color: #856404;
-    }
-
-    body.dark .vodafone-cash-section .instructions strong {
-      color: #ffca28;
-    }
+    .vodafone-cash-section .instructions strong { color: #856404; }
+    body.dark .vodafone-cash-section .instructions strong { color: #ffca28; }
 
     .whatsapp-btn {
       display: flex;
@@ -933,18 +1352,10 @@
       box-shadow: 0 4px 12px rgba(37, 211, 102, .3);
     }
 
-    .whatsapp-btn:hover {
-      background: #128c7e;
-      transform: translateY(-2px);
-    }
+    .whatsapp-btn:hover { background: #128c7e; transform: translateY(-2px); }
+    .whatsapp-btn svg { width: 24px; height: 24px; fill: white; }
 
-    .whatsapp-btn svg {
-      width: 24px;
-      height: 24px;
-      fill: white;
-    }
-
-    /* Discount Code Section */
+    /* ====== Discount Code Section ====== */
     .discount-section {
       display: none;
       background: linear-gradient(135deg, #fff8e1, #ffecb3);
@@ -959,10 +1370,7 @@
       border-color: #ffc107;
     }
 
-    .discount-section.show {
-      display: block;
-      animation: fadeIn .3s ease;
-    }
+    .discount-section.show { display: block; animation: fadeIn .3s ease; }
 
     .discount-section h4 {
       margin: 0 0 10px;
@@ -973,9 +1381,7 @@
       gap: 8px;
     }
 
-    body.dark .discount-section h4 {
-      color: #ffb74d;
-    }
+    body.dark .discount-section h4 { color: #ffb74d; }
 
     .discount-section .discount-info {
       background: #fff3e0;
@@ -989,19 +1395,10 @@
       text-align: center;
     }
 
-    body.dark .discount-section .discount-info {
-      background: #4a2e1f;
-      color: #ffb74d;
-    }
+    body.dark .discount-section .discount-info { background: #4a2e1f; color: #ffb74d; }
 
-    .discount-row {
-      display: flex;
-      gap: 8px;
-    }
-
-    .discount-row input {
-      flex: 1;
-    }
+    .discount-row { display: flex; gap: 8px; }
+    .discount-row input { flex: 1; }
 
     .discount-row button {
       padding: 12px 16px;
@@ -1027,23 +1424,13 @@
       font-weight: bold;
     }
 
-    body.dark .discount-applied {
-      background: #1e3d2a;
-      color: #a5d6a7;
-    }
-
+    body.dark .discount-applied { background: #1e3d2a; color: #a5d6a7; }
     .discount-applied.show { display: block; }
 
-    .discount-applied .amount {
-      font-size: 1.1rem;
-      color: #1b5e20;
-    }
+    .discount-applied .amount { font-size: 1.1rem; color: #1b5e20; }
+    body.dark .discount-applied .amount { color: #81c784; }
 
-    body.dark .discount-applied .amount {
-      color: #81c784;
-    }
-
-    /* Review Modal */
+    /* ====== Review Modal ====== */
     .review-section {
       background: #f9f5f0;
       border-radius: 12px;
@@ -1051,9 +1438,7 @@
       margin: 15px 0;
     }
 
-    body.dark .review-section {
-      background: #332620;
-    }
+    body.dark .review-section { background: #332620; }
 
     .review-section h3 {
       margin: 0 0 12px;
@@ -1071,13 +1456,13 @@
       border-bottom: 1px solid var(--border);
       font-size: .9rem;
       color: var(--text-primary);
+      gap: 8px;
     }
 
     .review-item:last-child { border-bottom: none; }
-
-    .review-item .name { font-weight: bold; }
+    .review-item .name { font-weight: bold; flex: 1; line-height: 1.4; }
     .review-item .qty { color: var(--text-muted); }
-    .review-item .price { color: var(--red); font-weight: bold; }
+    .review-item .price { color: var(--red); font-weight: bold; white-space: nowrap; }
 
     .review-info {
       margin: 12px 0 0;
@@ -1106,10 +1491,7 @@
       color: var(--text-primary);
     }
 
-    .review-totals .discount-line {
-      color: var(--green);
-      font-weight: bold;
-    }
+    .review-totals .discount-line { color: var(--green); font-weight: bold; }
 
     .review-totals .final-total {
       margin-top: 8px;
@@ -1128,40 +1510,38 @@
     }
 
     @media (max-width: 520px) {
-      .hero {
-        min-height: 245px;
-        padding: 18px 17px 33px;
-      }
-
+      .hero { min-height: 245px; padding: 18px 17px 33px; }
       .welcome { margin-top: 37px; }
       .brand { font-size: .95rem; }
       .brand-mark { width: 37px; height: 37px; }
       .theme-toggle { width: 42px; height: 42px; font-size: 18px; }
+      .gift-btn { width: 42px; height: 42px; font-size: 20px; }
       .cart-toggle { padding: 9px 11px; font-size: .85rem; }
       .food-image { height: 135px; }
-
       .restaurant-info { gap: 7px; }
-
-      .restaurant-info span {
-        width: 100%;
-        border-radius: 10px;
-        font-size: .8rem;
-      }
-
-      .closed-notice {
-        margin: -10px 10px 15px;
-        padding: 15px;
-      }
-
+      .restaurant-info span { width: 100%; border-radius: 10px; font-size: .8rem; }
+      .closed-notice { margin: -10px 10px 15px; padding: 15px; }
       .closed-notice h3 { font-size: 1.05rem; }
+      .vodafone-cash-section { padding: 15px; }
+      .vodafone-cash-section .phone-number { font-size: 1.15rem; }
 
-      .vodafone-cash-section {
-        padding: 15px;
-      }
+      .pm-image { height: 180px; }
+      .pm-image-title h3 { font-size: 1.15rem; }
+      .pm-image-title p { font-size: .82rem; }
+      .pm-scroll { padding: 16px 18px 4px; }
+      .pm-footer { padding: 12px 18px 16px; }
+      .pm-sizes { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .pm-size-btn { padding: 12px 8px; }
+      .pm-size-btn .size-label { font-size: .88rem; }
+      .pm-size-btn .size-price { font-size: .8rem; }
+      .pm-qty-btn { width: 40px; height: 40px; }
+      .pm-add-btn { padding: 12px 16px; font-size: .9rem; }
+      .pm-drink-img { width: 32px; height: 32px; }
 
-      .vodafone-cash-section .phone-number {
-        font-size: 1.15rem;
-      }
+      .gift-modal-icon { font-size: 60px; }
+      .gift-modal h2 { font-size: 1.25rem; }
+      .gift-code-box { font-size: 1.8rem; letter-spacing: 8px; padding: 14px 16px; }
+      .have-fun { font-size: 1.35rem; }
     }
   </style>
 </head>
@@ -1180,6 +1560,11 @@
         <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع الليلي/النهاري" title="تبديل الوضع">
           <span class="icon-moon">🌙</span>
           <span class="icon-sun">☀️</span>
+        </button>
+
+        <!-- زرار الهدية - يظهر يوم الاثنين فقط -->
+        <button class="gift-btn" id="giftBtn" style="display:none" aria-label="هدية خاصة" title="🎁 هدية خاصة ليك!">
+          🎁
         </button>
 
         <button class="cart-toggle" id="cartToggle">
@@ -1242,13 +1627,116 @@
         <span>الإجمالي</span>
         <span id="cartTotal">0 جنيه</span>
       </div>
-
-      <button class="checkout-btn" id="checkoutBtn" disabled>
-        إتمام الطلب
-      </button>
+      <button class="checkout-btn" id="checkoutBtn" disabled>إتمام الطلب</button>
     </div>
   </aside>
 
+  <!-- Gift Modal -->
+  <div class="modal gift-modal" id="giftModal">
+    <button class="close-btn" id="closeGift" style="position:absolute; top:14px; left:14px; z-index:5">×</button>
+
+    <!-- Confetti elements -->
+    <span class="confetti" style="left:10%; background:#ff6b9d; animation-delay:0s;">🎊</span>
+    <span class="confetti" style="left:25%; background:#c44dff; animation-delay:.4s;">✨</span>
+    <span class="confetti" style="left:40%; background:#ffb86c; animation-delay:.8s;">🎉</span>
+    <span class="confetti" style="left:55%; background:#ff6b9d; animation-delay:1.2s;">⭐</span>
+    <span class="confetti" style="left:70%; background:#c44dff; animation-delay:1.6s;">🎊</span>
+    <span class="confetti" style="left:85%; background:#ffb86c; animation-delay:2s;">✨</span>
+
+    <div class="gift-modal-icon">🎁</div>
+    <h2>🎉 هدية خاصة ليك! 🎉</h2>
+    <p class="gift-modal-subtitle">استمتع بخصم مميز على طلبك اليوم</p>
+
+    <p class="gift-code-label">🎟️ كود الخصم</p>
+    <div class="gift-code-box">5555</div>
+
+    <p class="gift-instruction">
+      ما تنساش تضغط على <span class="apply-highlight">(تطبيق)</span> عشان الكود يشتغل ✨
+    </p>
+
+    <p class="have-fun">✨ Have Fun! ✨</p>
+
+    <button class="gift-close-btn" id="giftCloseBtn">شكراً! 🎊</button>
+  </div>
+
+  <!-- Product Customization Modal -->
+  <div class="modal product-modal" id="productModal">
+    <div class="pm-image">
+      <button class="pm-close-btn" id="pmCloseBtn" aria-label="إغلاق">×</button>
+      <img id="pmImage" src="" alt="">
+      <div class="pm-image-title">
+        <h3 id="pmName"></h3>
+        <p id="pmDesc"></p>
+      </div>
+    </div>
+
+    <div class="pm-scroll">
+      <div class="pm-section" id="pmSizeSection">
+        <div class="pm-label">
+          <span class="label-icon">📏</span>
+          <span>اختار الحجم والسعر</span>
+        </div>
+        <div class="pm-sizes" id="pmSizes"></div>
+      </div>
+
+      <div class="pm-section" id="pmMixSection" style="display:none">
+        <div class="pm-label">
+          <span class="label-icon">🎯</span>
+          <span>نوع الميكس (اختياري)</span>
+        </div>
+        <select class="pm-mix-select" id="pmMixSelect">
+          <option value="">ميكس عادي (من غير تحديد)</option>
+          <option value="شيش على استربس">شيش على استربس</option>
+          <option value="سوسيس على استربس">سوسيس على استربس</option>
+          <option value="كفته فحم على استربس">كفته فحم على استربس</option>
+          <option value="بطاطس على استربس">بطاطس على استربس</option>
+          <option value="ميكس السلطان">ميكس السلطان (شيش + استربس + سوسيس)</option>
+        </select>
+        <div class="pm-mix-hint">💡 اختار نوع الميكس اللي يناسبك أو سيبه عادي</div>
+      </div>
+
+      <div class="pm-section" id="pmExtrasSection" style="display:none">
+        <div class="pm-label">
+          <span class="label-icon">🧀</span>
+          <span>إضافات</span>
+        </div>
+        <div id="pmExtrasList"></div>
+      </div>
+
+      <div class="pm-section" id="pmDrinksSection" style="display:none">
+        <div class="pm-label">
+          <span class="label-icon">🥤</span>
+          <span>اختار مشروباتك</span>
+        </div>
+        <div id="pmDrinksList"></div>
+      </div>
+
+      <div class="pm-section">
+        <div class="pm-label">
+          <span class="label-icon">🔢</span>
+          <span>الكمية</span>
+        </div>
+        <div class="pm-quantity">
+          <button class="pm-qty-btn" id="pmQtyMinus">−</button>
+          <span class="pm-qty-value" id="pmQtyValue">1</span>
+          <button class="pm-qty-btn" id="pmQtyPlus">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="pm-footer">
+      <div>
+        <div class="pm-total-label">الإجمالي</div>
+        <div class="pm-total-value" id="pmTotal">0 جنيه</div>
+      </div>
+      <button class="pm-add-btn" id="pmAddBtn">
+        <span>🛒</span>
+        <span>أضف للسلة</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Checkout Modal -->
   <div class="modal" id="checkoutModal">
     <button class="close-btn" id="closeCheckout" style="position:absolute; top:14px; left:14px">×</button>
 
@@ -1271,9 +1759,7 @@
 
       <div class="discount-section" id="discountSection">
         <h4>🎁 كود خصم الاثنين</h4>
-        <div class="discount-info">
-          خصم 10% على الطلبات فوق 100 جنيه — يوم الاثنين فقط!
-        </div>
+        <div class="discount-info">خصم 10% على الطلبات فوق 100 جنيه — يوم الاثنين فقط!</div>
         <div class="discount-row">
           <input id="discountCode" type="text" placeholder="ادخل كود الخصم">
           <button type="button" id="applyDiscount">تطبيق</button>
@@ -1293,21 +1779,15 @@
 
       <div class="vodafone-cash-section" id="vodafoneCashSection">
         <h4>💚 الدفع عبر Vodafone Cash</h4>
-
-        <div class="disclaimer">
-          ⚠️ تنبيه هام: المطعم غير مسؤول في حالة التحويل الخاطئ
-        </div>
-
+        <div class="disclaimer">⚠️ تنبيه هام: المطعم غير مسؤول في حالة التحويل الخاطئ</div>
         <div class="order-total-display">
           💰 قيمة الطلب المطلوب تحويلها: <span id="vodafoneOrderTotal">0</span> جنيه
         </div>
-
         <div class="info-box">
           <p style="margin: 0 0 8px; text-align: center; font-weight: bold;">حوّل قيمة الطلب على:</p>
           <div class="phone-number">01031198587</div>
           <div class="recipient-name">باسم: سلطان</div>
         </div>
-
         <div class="instructions">
           <strong>📋 التعليمات:</strong><br>
           1. افتح تطبيق فودافون كاش وحوّل قيمة الطلب<br>
@@ -1316,7 +1796,6 @@
           4. اضغط الزر أدناه لإرسال الصورة عبر واتساب<br>
           5. تاكد من ارسال الصوره عبر واتساب قبل الضغط على تاكيد الطلب
         </div>
-
         <a href="#" class="whatsapp-btn" id="whatsappBtn" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
@@ -1365,23 +1844,17 @@
     // ==================== Theme Toggle ====================
     const themeToggle = document.getElementById("themeToggle");
     const body = document.body;
-
-    // Load saved theme preference
     const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "dark") {
-      body.classList.add("dark");
-    }
+    if (savedTheme === "dark") body.classList.add("dark");
 
     themeToggle.addEventListener("click", () => {
       body.classList.toggle("dark");
-      const isDark = body.classList.contains("dark");
-      localStorage.setItem("theme", isDark ? "dark" : "light");
+      localStorage.setItem("theme", body.classList.contains("dark") ? "dark" : "light");
     });
 
-    // ==================== Rest of the Script ====================
+    // ==================== Config ====================
     const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbygsDqIAiAiUeI7qFyQQTzqqgC3lPrilaxCg70OYtGddtwGR8YY-dc7gLh_lnWTdQg/exec";
     const WHATSAPP_NUMBER = "201204857565";
-
     const DISCOUNT_CODE = "5555";
     const DISCOUNT_PERCENTAGE = 10;
     const MIN_ORDER_FOR_DISCOUNT = 100;
@@ -1395,6 +1868,7 @@
       crepeShish: "mix.jpeg",
       crepeMix: "mix.jpeg",
       crepeRoll: "Rol.jpeg",
+      crepePotato: "potato.png",
 
       burgerBeef: "beef.jpeg",
       burgerChicken: "ck.jpeg",
@@ -1403,57 +1877,153 @@
       pizzaMeat: "pizza.jpeg",
       pizzaCheese: "piza cheez.jpeg",
 
-      extrasCrepePotato: "potato.png",
       extrasPotatoPacket: "باكت بطاطس.png",
       extrasCheddarSauce: "شيدر.png",
-      extrasKetchup: "كاتشب.png"
+      extrasKetchup: "كاتشب.png",
+
+      drinks: "drink.png",
+      pepsi: "pepsi.png",
+      dietPepsi: "pepsi dite.png",
+      cocaCola: "coca.png",
+      sprite: "sprite.png",
+      fanta: "fanta.png",
+      sevenUp: "sven up.png",
+      pepsiLarge: "1.5.png",
+      pepsiXLarge: "2.5.png"
     };
 
+    // ==================== Menu Data ====================
     const menu = {
       crepe: {
         title: "كريب السلطان",
-        description: "اختار نوع وحجم الكريب المناسب لك",
+        description: "اختار نوع الكريب وحدد الحجم والإضافات اللي تعجبك",
         items: [
-          { id: "c1", name: "كريب استربس - صغير", description: "صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 70, image: PRODUCT_IMAGES.crepeStrips },
-          { id: "c2", name: "كريب استربس - وسط", description: "صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 90, image: PRODUCT_IMAGES.crepeStrips },
-          { id: "c3", name: "كريب استربس - كبير", description: "صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 150, image: PRODUCT_IMAGES.crepeStrips },
-          { id: "c4", name: "كريب استربس - VIP", description: "صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 250, image: PRODUCT_IMAGES.crepeStrips },
-
-          { id: "c5", name: "كريب بانيه - صغير", description: "شرائح فراخ متبلة، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 40, image: PRODUCT_IMAGES.crepePane },
-          { id: "c6", name: "كريب بانيه - وسط", description: "شرائح فراخ متبلة، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 60, image: PRODUCT_IMAGES.crepePane },
-          { id: "c7", name: "كريب بانيه - كبير", description: "شرائح فراخ متبلة، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 80, image: PRODUCT_IMAGES.crepePane },
-          { id: "c8", name: "كريب بانيه - VIP", description: "شرائح فراخ متبلة، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 200, image: PRODUCT_IMAGES.crepePane },
-
-          { id: "c9", name: "كريب شيش - صغير", description: "قطع صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 100, image: PRODUCT_IMAGES.crepeShish },
-          { id: "c10", name: "كريب شيش - وسط", description: "قطع صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 130, image: PRODUCT_IMAGES.crepeShish },
-          { id: "c11", name: "كريب شيش - كبير", description: "قطع صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 150, image: PRODUCT_IMAGES.crepeShish },
-          { id: "c12", name: "كريب شيش - VIP", description: "قطع صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.", price: 300, image: PRODUCT_IMAGES.crepeShish },
-
-          { id: "c13", name: "كريب مكس - صغير", description: "شيش، استربس، بانيه وكامل الإضافات.", price: 80, image: PRODUCT_IMAGES.crepeMix },
-          { id: "c14", name: "كريب مكس - وسط", description: "شيش، استربس، بانيه وكامل الإضافات.", price: 100, image: PRODUCT_IMAGES.crepeMix },
-          { id: "c15", name: "كريب مكس - كبير", description: "شيش، استربس، بانيه وكامل الإضافات.", price: 150, image: PRODUCT_IMAGES.crepeMix },
-          { id: "c16", name: "كريب مكس - VIP", description: "شيش، استربس، بانيه وكامل الإضافات.", price: 250, image: PRODUCT_IMAGES.crepeMix },
-
-          { id: "c17", name: "كريب رول - صغير", description: "مكس فراخ مخصوص مع كامل الإضافات.", price: 100, image: PRODUCT_IMAGES.crepeRoll },
-          { id: "c18", name: "كريب رول - وسط", description: "مكس فراخ مخصوص مع كامل الإضافات.", price: 130, image: PRODUCT_IMAGES.crepeRoll },
-          { id: "c19", name: "كريب رول - كبير", description: "مكس فراخ مخصوص مع كامل الإضافات.", price: 160, image: PRODUCT_IMAGES.crepeRoll },
-          { id: "c20", name: "كريب رول - VIP", description: "مكس فراخ مخصوص مع كامل الإضافات.", price: 250, image: PRODUCT_IMAGES.crepeRoll }
+          {
+            id: "c_strips",
+            name: "كريب استربس",
+            description: "صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.",
+            image: PRODUCT_IMAGES.crepeStrips,
+            sizes: [
+              { label: "صغير", price: 70 },
+              { label: "وسط", price: 90 },
+              { label: "كبير", price: 150 },
+              { label: "VIP", price: 250 }
+            ],
+            extraCheese: true,
+            hasExtras: true,
+            mixOptions: false
+          },
+          {
+            id: "c_mix",
+            name: "كريب مكس",
+            description: "مكس فراخ مخصوص مع كامل الإضافات - اختار تركيب الميكس اللي يعجبك.",
+            image: PRODUCT_IMAGES.crepeMix,
+            sizes: [
+              { label: "صغير", price: 80 },
+              { label: "وسط", price: 100 },
+              { label: "كبير", price: 150 },
+              { label: "VIP", price: 250 }
+            ],
+            extraCheese: true,
+            hasExtras: true,
+            mixOptions: true
+          },
+          {
+            id: "c_potato",
+            name: "كريب بطاطس",
+            description: "كريب محشي بطاطس مقرمشة ولذيذة.",
+            image: PRODUCT_IMAGES.crepePotato,
+            sizes: [
+              { label: "عادي", price: 40 },
+              { label: "وسط", price: 50 },
+              { label: "كبير", price: 60 }
+            ],
+            extraCheese: false,
+            hasExtras: false,
+            mixOptions: false
+          },
+          {
+            id: "c_pane",
+            name: "كريب بانيه",
+            description: "شرائح فراخ متبلة، خضار، كاتشب، مايونيز وصوص تاكسس.",
+            image: PRODUCT_IMAGES.crepePane,
+            sizes: [
+              { label: "صغير", price: 40 },
+              { label: "وسط", price: 60 },
+              { label: "كبير", price: 80 },
+              { label: "VIP", price: 200 }
+            ],
+            extraCheese: true,
+            hasExtras: true,
+            mixOptions: false
+          },
+          {
+            id: "c_shish",
+            name: "كريب شيش",
+            description: "قطع صدور فراخ، موتزاريلا، خضار، كاتشب، مايونيز وصوص تاكسس.",
+            image: PRODUCT_IMAGES.crepeShish,
+            sizes: [
+              { label: "صغير", price: 100 },
+              { label: "وسط", price: 130 },
+              { label: "كبير", price: 150 },
+              { label: "VIP", price: 300 }
+            ],
+            extraCheese: true,
+            hasExtras: true,
+            mixOptions: false
+          },
+          {
+            id: "c_roll",
+            name: "كريب رول",
+            description: "مكس فراخ مخصوص مع كامل الإضافات في رول لذيذ.",
+            image: PRODUCT_IMAGES.crepeRoll,
+            sizes: [
+              { label: "صغير", price: 100 },
+              { label: "وسط", price: 130 },
+              { label: "كبير", price: 160 },
+              { label: "VIP", price: 250 }
+            ],
+            extraCheese: false,
+            hasExtras: true,
+            mixOptions: false
+          }
         ]
       },
 
       burger: {
         title: "برجر السلطان",
-        description: "برجر لحم وبرجر فراخ طازج مع البطاطس وصوص تاكسس",
+        description: "برجر لحم وفراخ طازج - اختار النوع والحجم المناسب",
         items: [
-          { id: "b1", name: "كلاسيك برجر بيف", description: "بيف، صوص تاكسس، كابوتشه وبطاطس.", price: 80, image: PRODUCT_IMAGES.burgerBeef },
-          { id: "b2", name: "تشيز برجر بيف", description: "بيف، موتزاريلا، شيدر، صوص تاكسس وبطاطس.", price: 100, image: PRODUCT_IMAGES.burgerBeef },
-          { id: "b3", name: "بيج برجر بيف", description: "٢ قطعة بيف، صوص تاكسس، شيدر وبطاطس.", price: 150, image: PRODUCT_IMAGES.burgerBeef },
-          { id: "b4", name: "بيج برجر بيف كبير", description: "٢ قطعة بيف، صوص تاكسس، شيدر وبطاطس.", price: 200, image: PRODUCT_IMAGES.burgerBeef },
-
-          { id: "b5", name: "كلاسيك برجر فراخ", description: "فراخ، صوص تاكسس، كابوتشه وبطاطس.", price: 80, image: PRODUCT_IMAGES.burgerChicken },
-          { id: "b6", name: "تشيز برجر فراخ", description: "فراخ، موتزاريلا، شيدر، صوص تاكسس وبطاطس.", price: 100, image: PRODUCT_IMAGES.burgerChicken },
-          { id: "b7", name: "بيج برجر فراخ", description: "٢ قطعة فراخ، صوص تاكسس، شيدر وبطاطس.", price: 150, image: PRODUCT_IMAGES.burgerChicken },
-          { id: "b8", name: "بيج برجر فراخ كبير", description: "٢ قطعة فراخ، صوص تاكسس، شيدر وبطاطس.", price: 200, image: PRODUCT_IMAGES.burgerChicken }
+          {
+            id: "b_beef",
+            name: "برجر لحم",
+            description: "بيف طازج، صوص تاكسس، كابوتشه وبطاطس مقرمشة.",
+            image: PRODUCT_IMAGES.burgerBeef,
+            sizes: [
+              { label: "كلاسيك", price: 80 },
+              { label: "تشيز", price: 100 },
+              { label: "بيج", price: 150 },
+              { label: "بيج كبير", price: 200 }
+            ],
+            extraCheese: false,
+            hasExtras: false,
+            mixOptions: false
+          },
+          {
+            id: "b_chicken",
+            name: "برجر فراخ",
+            description: "فراخ طازجة، صوص تاكسس، كابوتشه وبطاطس مقرمشة.",
+            image: PRODUCT_IMAGES.burgerChicken,
+            sizes: [
+              { label: "كلاسيك", price: 80 },
+              { label: "تشيز", price: 100 },
+              { label: "بيج", price: 150 },
+              { label: "بيج كبير", price: 200 }
+            ],
+            extraCheese: false,
+            hasExtras: false,
+            mixOptions: false
+          }
         ]
       },
 
@@ -1463,10 +2033,8 @@
         items: [
           { id: "p1", name: "بيتزا فراخ - وسط", description: "استربس أو بانيه أو شيش مع كامل الإضافات.", price: 130, image: PRODUCT_IMAGES.pizzaChicken },
           { id: "p2", name: "بيتزا فراخ - كبير", description: "استربس أو بانيه أو شيش مع كامل الإضافات.", price: 160, image: PRODUCT_IMAGES.pizzaChicken },
-
           { id: "p3", name: "بيتزا لحوم - وسط", description: "برجر أو كفتة أو سوسيس مع كامل الإضافات.", price: 130, image: PRODUCT_IMAGES.pizzaMeat },
           { id: "p4", name: "بيتزا لحوم - كبير", description: "برجر أو كفتة أو سوسيس مع كامل الإضافات.", price: 160, image: PRODUCT_IMAGES.pizzaMeat },
-
           { id: "p5", name: "بيتزا جبن - وسط", description: "موتزاريلا، شيدر، رومي وفلمنكو مع كامل الإضافات.", price: 130, image: PRODUCT_IMAGES.pizzaCheese },
           { id: "p6", name: "بيتزا جبن - كبير", description: "موتزاريلا، شيدر، رومي وفلمنكو مع كامل الإضافات.", price: 160, image: PRODUCT_IMAGES.pizzaCheese }
         ]
@@ -1474,12 +2042,46 @@
 
       extras: {
         title: "إضافات السلطان",
-        description: "اختار الإضافات اللي تحبها مع طلبك",
+        description: "اختار الإضافات والمشروبات اللي تحبها مع طلبك",
         items: [
-          { id: "e1", name: "كريب بطاطس", description: "كريب محشي بطاطس مقرمشة ولذيذة.", price: 40, image: PRODUCT_IMAGES.extrasCrepePotato },
-          { id: "e2", name: "باكيت بطاطس", description: "باكيت بطاطس مقرمشة سخنة.", price: 10, image: PRODUCT_IMAGES.extrasPotatoPacket },
-          { id: "e3", name: "صوص شيدر", description: "كيس صوص شيدر (السعر للكيس الواحد).", price: 5, image: PRODUCT_IMAGES.extrasCheddarSauce },
-          { id: "e4", name: "كاتشب", description: "5 كياس كاتشب صغيرة.", price: 5, image: PRODUCT_IMAGES.extrasKetchup }
+          {
+            id: "e_drinks",
+            name: "إضافة مشروب",
+            description: "اختار مشروبك المفضل مع طلبك",
+            image: PRODUCT_IMAGES.drinks,
+            isDrinkSelector: true,
+            drinks: [
+              { id: "d_pepsi", name: "بيبسي عادي", price: 20, image: PRODUCT_IMAGES.pepsi },
+              { id: "d_diet", name: "بيبسي دايت (كنز)", price: 20, image: PRODUCT_IMAGES.dietPepsi },
+              { id: "d_cola", name: "كوكاكولا", price: 20, image: PRODUCT_IMAGES.cocaCola },
+              { id: "d_sprite", name: "سبرايت", price: 20, image: PRODUCT_IMAGES.sprite },
+              { id: "d_fanta", name: "فانتا", price: 20, image: PRODUCT_IMAGES.fanta },
+              { id: "d_7up", name: "سفن أب", price: 20, image: PRODUCT_IMAGES.sevenUp },
+              { id: "d_pepsi_large", name: "بيبسي كبيرة 1.5 لتر", price: 35, image: PRODUCT_IMAGES.pepsiLarge },
+              { id: "d_pepsi_xlarge", name: "بيبسي كبيرة 2.5 لتر", price: 50, image: PRODUCT_IMAGES.pepsiXLarge }
+            ]
+          },
+          {
+            id: "e_potato_packet",
+            name: "باكيت بطاطس",
+            description: "باكيت بطاطس مقرمشة سخنة.",
+            price: 10,
+            image: PRODUCT_IMAGES.extrasPotatoPacket
+          },
+          {
+            id: "e_cheddar",
+            name: "صوص شيدر",
+            description: "كيس صوص شيدر (السعر للكيس الواحد).",
+            price: 5,
+            image: PRODUCT_IMAGES.extrasCheddarSauce
+          },
+          {
+            id: "e_ketchup",
+            name: "كاتشب",
+            description: "5 كياس كاتشب صغيرة.",
+            price: 5,
+            image: PRODUCT_IMAGES.extrasKetchup
+          }
         ]
       }
     };
@@ -1487,6 +2089,7 @@
     let currentCategory = "crepe";
     let cart = [];
 
+    // ==================== DOM Elements ====================
     const menuGrid = document.getElementById("menuGrid");
     const categoryTitle = document.getElementById("categoryTitle");
     const categoryDescription = document.getElementById("categoryDescription");
@@ -1499,27 +2102,65 @@
     const checkoutModal = document.getElementById("checkoutModal");
     const reviewModal = document.getElementById("reviewModal");
     const successModal = document.getElementById("successModal");
+    const productModal = document.getElementById("productModal");
+    const giftBtn = document.getElementById("giftBtn");
+    const giftModal = document.getElementById("giftModal");
 
-    function isRestaurantOpen() {
+    // ==================== Restaurant Status ====================
+   function isRestaurantOpen() {
+  const now = new Date();
+  const day = now.getDay();
+  const hours = now.getHours();
+  if (day === 0) return { open: false, reason: "sunday" };
+  if (hours >= 15 || hours < 3) return { open: true, reason: null };
+  return { open: false, reason: "time" };
+}
+
+    function isMonday() { return new Date().getDay() === 1; }
+
+    // ==================== Gift Button Logic ====================
+    function getTodayKey() {
       const now = new Date();
-      const day = now.getDay();
-      const hours = now.getHours();
-
-      if (day === 0) {
-        return { open: false, reason: "sunday" };
-      }
-
-      if (hours >= 15 || hours < 3) {
-        return { open: true, reason: null };
-      }
-
-      return { open: false, reason: "time" };
+      return `giftClicked_${now.getFullYear()}_${now.getMonth()}_${now.getDate()}`;
     }
 
-    function isMonday() {
-      return new Date().getDay() === 1;
+    function updateGiftVisibility() {
+      if (isMonday()) {
+        giftBtn.style.display = "grid";
+
+      
+        const clickedKey = getTodayKey();
+        if (localStorage.getItem(clickedKey) === "yes") {
+          giftBtn.classList.remove("animate");
+        } else {
+          giftBtn.classList.add("animate");
+        }
+      } else {
+        giftBtn.style.display = "none";
+        giftBtn.classList.remove("animate");
+      }
     }
 
+    giftBtn.addEventListener("click", () => {
+      giftModal.classList.add("show");
+      overlay.classList.add("show");
+
+     
+      giftBtn.classList.remove("animate");
+      localStorage.setItem(getTodayKey(), "yes");
+    });
+
+    document.getElementById("closeGift").addEventListener("click", () => {
+      giftModal.classList.remove("show");
+      overlay.classList.remove("show");
+    });
+
+    document.getElementById("giftCloseBtn").addEventListener("click", () => {
+      giftModal.classList.remove("show");
+      overlay.classList.remove("show");
+    });
+
+    // ==================== Discount Section ====================
     function updateDiscountSection() {
       const section = document.getElementById("discountSection");
       if (isMonday()) {
@@ -1534,17 +2175,9 @@
 
     function updateClosedNotice() {
       const notice = document.getElementById("closedNotice");
-      const message = document.getElementById("closedMessage");
       const status = isRestaurantOpen();
-
       if (!status.open) {
         notice.classList.add("show");
-
-        if (status.reason === "sunday") {
-          message.innerHTML = "نعتذر، المطعم مغلق يوم الأحد.<br>نستقبلكم باقي أيام الأسبوع بإذن الله.";
-        } else if (status.reason === "time") {
-          message.innerHTML = "نعتذر، المطعم مغلق الآن خارج أوقات العمل.<br>المطعم يفتح الساعة 3 مساءً ويغلق الساعة 3 صباحاً.";
-        }
       } else {
         notice.classList.remove("show");
       }
@@ -1557,36 +2190,60 @@
 
     updateClosedNotice();
     updateDiscountSection();
+    updateGiftVisibility();
     setInterval(() => {
       updateClosedNotice();
       updateDiscountSection();
+      updateGiftVisibility();
     }, 60000);
 
+    // ==================== Render Menu ====================
     function renderMenu() {
       const category = menu[currentCategory];
-
       categoryTitle.textContent = category.title;
       categoryDescription.textContent = category.description;
 
-      menuGrid.innerHTML = category.items.map(item => `
-        <article class="food-card">
-          <div class="food-image">
-            <img src="${item.image}" alt="${item.name}">
-          </div>
+      menuGrid.innerHTML = category.items.map(item => {
+        const isCustomizable = !!item.sizes || item.isDrinkSelector;
+        let minPrice, maxPrice, priceLabel;
+        
+        if (item.isDrinkSelector) {
+          const prices = item.drinks.map(d => d.price);
+          minPrice = Math.min(...prices);
+          maxPrice = Math.max(...prices);
+          priceLabel = (minPrice === maxPrice)
+            ? `${minPrice} جنيه`
+            : `${minPrice} - ${maxPrice} جنيه`;
+        } else if (item.sizes) {
+          const prices = item.sizes.map(s => s.price);
+          minPrice = Math.min(...prices);
+          maxPrice = Math.max(...prices);
+          priceLabel = (minPrice === maxPrice)
+            ? `${minPrice} جنيه`
+            : `${minPrice} - ${maxPrice} جنيه`;
+        } else {
+          priceLabel = `${item.price} جنيه`;
+        }
 
-          <div class="food-content">
-            <h3>${item.name}</h3>
-            <p>${item.description}</p>
+        const btnText = isCustomizable ? "🎨 خصّص واطلب" : "+ أضف";
 
-            <div class="card-footer">
-              <span class="price">${item.price} جنيه</span>
-              <button class="add-btn" onclick="addToCart('${item.id}')">
-                أضف للسلة
-              </button>
+        return `
+          <article class="food-card" data-product-id="${item.id}">
+            <div class="food-image">
+              <img src="${item.image}" alt="${item.name}" loading="lazy">
+              ${isCustomizable ? '<span class="customize-badge">✨ للتخصيص</span>' : ''}
             </div>
-          </div>
-        </article>
-      `).join("");
+            <div class="food-content">
+              <h3>${item.name}</h3>
+              <p>${item.description}</p>
+              <div class="card-footer">
+                <span class="price">${priceLabel}</span>
+                <button class="add-btn">${btnText}</button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
     }
 
     function findItem(id) {
@@ -1596,38 +2253,323 @@
       }
     }
 
-    function addToCart(id) {
-      const existing = cart.find(item => item.id === id);
+    // ==================== Product Modal ====================
+    let currentProduct = null;
+    let selectedSizeIndex = 0;
+    let modalQuantity = 1;
 
-      if (existing) {
-        existing.quantity++;
+    function openProductModal(product) {
+      currentProduct = product;
+      selectedSizeIndex = 0;
+      modalQuantity = 1;
+
+      document.getElementById("pmImage").src = product.image;
+      document.getElementById("pmName").textContent = product.name;
+      document.getElementById("pmDesc").textContent = product.description;
+
+      const sizeSection = document.getElementById("pmSizeSection");
+      const sizesContainer = document.getElementById("pmSizes");
+      const mixSection = document.getElementById("pmMixSection");
+      const extrasSection = document.getElementById("pmExtrasSection");
+      const extrasList = document.getElementById("pmExtrasList");
+      const drinksSection = document.getElementById("pmDrinksSection");
+      const drinksList = document.getElementById("pmDrinksList");
+
+      sizeSection.style.display = "none";
+      mixSection.style.display = "none";
+      extrasSection.style.display = "none";
+      drinksSection.style.display = "none";
+
+      if (product.isDrinkSelector) {
+        drinksSection.style.display = "";
+        drinksList.innerHTML = product.drinks.map(drink => `
+          <div class="pm-checkbox" data-drink-id="${drink.id}" data-drink-name="${drink.name}" data-price="${drink.price}" data-drink-image="${drink.image}">
+            <input type="checkbox">
+            <div class="pm-checkbox-main">
+              <span class="pm-checkbox-check"></span>
+              <img src="${drink.image}" alt="${drink.name}" class="pm-drink-img">
+              <span>${drink.name}</span>
+            </div>
+            <span class="pm-extra-price">${drink.price} جنيه</span>
+          </div>
+        `).join("");
+
+        drinksList.querySelectorAll('.pm-checkbox').forEach(box => {
+          box.addEventListener('click', function() {
+            const input = this.querySelector('input');
+            input.checked = !input.checked;
+            this.classList.toggle('active', input.checked);
+            updateModalTotal();
+          });
+        });
       } else {
-        const item = findItem(id);
-        cart.push({ ...item, quantity: 1 });
-      }
+        if (product.sizes) {
+          sizeSection.style.display = "";
+          sizesContainer.innerHTML = product.sizes.map((size, idx) => `
+            <button class="pm-size-btn ${idx === 0 ? 'active' : ''}" data-index="${idx}">
+              <span class="size-label">${size.label}</span>
+              <span class="size-price">${size.price} جنيه</span>
+            </button>
+          `).join("");
+          
+          sizesContainer.querySelectorAll(".pm-size-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+              sizesContainer.querySelectorAll(".pm-size-btn").forEach(b => b.classList.remove("active"));
+              btn.classList.add("active");
+              selectedSizeIndex = parseInt(btn.dataset.index);
+              updateModalTotal();
+            });
+          });
+        }
 
-      renderCart();
-      openCart();
-    }
+        if (product.mixOptions) {
+          mixSection.style.display = "";
+          document.getElementById("pmMixSelect").value = "";
+        }
 
-    function updateQuantity(id, amount) {
-      const item = cart.find(item => item.id === id);
-      if (!item) return;
-
-      item.quantity += amount;
-
-      if (item.quantity <= 0) {
-        cart = cart.filter(item => item.id !== id);
-        if (!cart.length) {
-          discountApplied = false;
-          document.getElementById("discountApplied").classList.remove("show");
-          document.getElementById("discountCode").value = "";
+        if (product.extraCheese || product.hasExtras) {
+          extrasSection.style.display = "";
+          const extrasHtml = [];
+          
+          if (product.extraCheese) {
+            extrasHtml.push(`
+              <div class="pm-checkbox" data-extra-name="وش جبنه" data-price="10">
+                <input type="checkbox">
+                <div class="pm-checkbox-main">
+                  <span class="pm-checkbox-check"></span>
+                  <span>🧀 وش جبنه زيادة</span>
+                </div>
+                <span class="pm-extra-price">+10 جنيه</span>
+              </div>
+            `);
+          }
+          
+          if (product.hasExtras) {
+            extrasHtml.push(`
+              <div class="pm-checkbox" data-extra-name="باكيت بطاطس" data-price="10">
+                <input type="checkbox">
+                <div class="pm-checkbox-main">
+                  <span class="pm-checkbox-check"></span>
+                  <span>🍟 باكيت بطاطس</span>
+                </div>
+                <span class="pm-extra-price">+10 جنيه</span>
+              </div>
+              <div class="pm-checkbox" data-extra-name="كيس صوص شيدر" data-price="5">
+                <input type="checkbox">
+                <div class="pm-checkbox-main">
+                  <span class="pm-checkbox-check"></span>
+                  <span>🧀 كيس صوص شيدر</span>
+                </div>
+                <span class="pm-extra-price">+5 جنيه</span>
+              </div>
+              <div class="pm-checkbox" data-extra-name="5 كياس كاتشب" data-price="5">
+                <input type="checkbox">
+                <div class="pm-checkbox-main">
+                  <span class="pm-checkbox-check"></span>
+                  <span>🍅 5 كياس كاتشب</span>
+                </div>
+                <span class="pm-extra-price">+5 جنيه</span>
+              </div>
+            `);
+          }
+          
+          extrasList.innerHTML = extrasHtml.join('');
+          
+          extrasList.querySelectorAll('.pm-checkbox').forEach(box => {
+            box.addEventListener('click', function() {
+              const input = this.querySelector('input');
+              input.checked = !input.checked;
+              this.classList.toggle('active', input.checked);
+              updateModalTotal();
+            });
+          });
         }
       }
 
-      renderCart();
+      document.getElementById("pmQtyValue").textContent = "1";
+      updateModalTotal();
+      productModal.classList.add("show");
+      overlay.classList.add("show");
     }
 
+    function closeProductModal() {
+      productModal.classList.remove("show");
+      overlay.classList.remove("show");
+      currentProduct = null;
+    }
+
+    function updateModalTotal() {
+      if (!currentProduct) return;
+      let price = 0;
+      
+      if (currentProduct.isDrinkSelector) {
+        document.querySelectorAll('#pmDrinksList .pm-checkbox input:checked').forEach(input => {
+          const box = input.closest('.pm-checkbox');
+          price += parseFloat(box.dataset.price);
+        });
+      } else {
+        price = currentProduct.sizes
+          ? currentProduct.sizes[selectedSizeIndex].price
+          : currentProduct.price;
+        
+        document.querySelectorAll('#pmExtrasList .pm-checkbox input:checked').forEach(input => {
+          const box = input.closest('.pm-checkbox');
+          price += parseFloat(box.dataset.price);
+        });
+      }
+      
+      document.getElementById("pmTotal").textContent = `${price * modalQuantity} جنيه`;
+    }
+
+    document.getElementById("pmMixSelect").addEventListener("change", function() {
+      updateModalTotal();
+    });
+
+    document.getElementById("pmQtyMinus").addEventListener("click", () => {
+      if (modalQuantity > 1) {
+        modalQuantity--;
+        document.getElementById("pmQtyValue").textContent = modalQuantity;
+        updateModalTotal();
+      }
+    });
+
+    document.getElementById("pmQtyPlus").addEventListener("click", () => {
+      if (modalQuantity < 50) {
+        modalQuantity++;
+        document.getElementById("pmQtyValue").textContent = modalQuantity;
+        updateModalTotal();
+      }
+    });
+
+    document.getElementById("pmCloseBtn").addEventListener("click", closeProductModal);
+
+    document.getElementById("pmAddBtn").addEventListener("click", () => {
+      if (!currentProduct) return;
+
+      if (currentProduct.isDrinkSelector) {
+        const selectedDrinks = [];
+        document.querySelectorAll('#pmDrinksList .pm-checkbox input:checked').forEach(input => {
+          const box = input.closest('.pm-checkbox');
+          selectedDrinks.push({
+            id: box.dataset.drinkId,
+            name: box.dataset.drinkName,
+            price: parseFloat(box.dataset.price),
+            image: box.dataset.drinkImage
+          });
+        });
+        
+        if (selectedDrinks.length === 0) {
+          alert("⚠️ اختار مشروب واحد على الأقل.");
+          return;
+        }
+        
+        selectedDrinks.forEach(drink => {
+          const cartKey = `drink_${drink.id}`;
+          const existing = cart.find(c => c.cartKey === cartKey);
+          if (existing) {
+            existing.quantity += modalQuantity;
+          } else {
+            cart.push({
+              cartKey,
+              id: drink.id,
+              name: drink.name,
+              displayTitle: drink.name,
+              price: drink.price,
+              quantity: modalQuantity,
+              image: drink.image
+            });
+          }
+        });
+        
+        renderCart();
+        closeProductModal();
+        openCart();
+        return;
+      }
+
+      let price, sizeLabel;
+      if (currentProduct.sizes) {
+        price = currentProduct.sizes[selectedSizeIndex].price;
+        sizeLabel = currentProduct.sizes[selectedSizeIndex].label;
+      } else {
+        price = currentProduct.price;
+        sizeLabel = "";
+      }
+
+      const selectedExtras = [];
+      let extraPrice = 0;
+      document.querySelectorAll('#pmExtrasList .pm-checkbox input:checked').forEach(input => {
+        const box = input.closest('.pm-checkbox');
+        selectedExtras.push(box.dataset.extraName);
+        extraPrice += parseFloat(box.dataset.price);
+      });
+
+      const finalPrice = price + extraPrice;
+      let selectedMixOption = "";
+      if (currentProduct.mixOptions) {
+        selectedMixOption = document.getElementById("pmMixSelect").value;
+      }
+
+      const cartKey = `${currentProduct.id}|${selectedSizeIndex}|${selectedMixOption}|${selectedExtras.sort().join(',')}`;
+
+      let displayTitle = currentProduct.name;
+      if (sizeLabel) displayTitle += ` - ${sizeLabel}`;
+      if (selectedMixOption) displayTitle += ` - ${selectedMixOption}`;
+      if (selectedExtras.length) displayTitle += ` - ${selectedExtras.join(' + ')}`;
+
+      const existing = cart.find(item => item.cartKey === cartKey);
+      if (existing) {
+        existing.quantity += modalQuantity;
+      } else {
+        cart.push({
+          cartKey,
+          id: currentProduct.id,
+          name: currentProduct.name,
+          displayTitle,
+          price: finalPrice,
+          quantity: modalQuantity,
+          image: currentProduct.image
+        });
+      }
+
+      renderCart();
+      closeProductModal();
+      openCart();
+    });
+
+    // ==================== Card Click Handler ====================
+    menuGrid.addEventListener("click", (e) => {
+      const card = e.target.closest(".food-card");
+      if (!card) return;
+
+      const productId = card.dataset.productId;
+      const item = findItem(productId);
+      if (!item) return;
+
+      if (item.sizes || item.isDrinkSelector) {
+        openProductModal(item);
+      } else {
+        const cartKey = item.id;
+        const existing = cart.find(c => c.cartKey === cartKey);
+        if (existing) {
+          existing.quantity += 1;
+        } else {
+          cart.push({
+            cartKey,
+            id: item.id,
+            name: item.name,
+            displayTitle: item.name,
+            price: item.price,
+            quantity: 1,
+            image: item.image
+          });
+        }
+        renderCart();
+        openCart();
+      }
+    });
+
+    // ==================== Cart ====================
     function renderCart() {
       const count = cart.reduce((sum, item) => sum + item.quantity, 0);
       const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -1651,19 +2593,32 @@
           <div class="cart-item-icon">
             <img src="${item.image}" alt="${item.name}">
           </div>
-
           <div>
-            <h4>${item.name}</h4>
+            <h4>${item.displayTitle}</h4>
             <small>${item.price * item.quantity} جنيه</small>
           </div>
-
           <div class="quantity">
-            <button onclick="updateQuantity('${item.id}', -1)" aria-label="تقليل الكمية">−</button>
+            <button onclick="updateQuantity('${item.cartKey}', -1)" aria-label="تقليل الكمية">−</button>
             <strong>${item.quantity}</strong>
-            <button onclick="updateQuantity('${item.id}', 1)" aria-label="زيادة الكمية">+</button>
+            <button onclick="updateQuantity('${item.cartKey}', 1)" aria-label="زيادة الكمية">+</button>
           </div>
         </div>
       `).join("");
+    }
+
+    function updateQuantity(cartKey, amount) {
+      const item = cart.find(item => item.cartKey === cartKey);
+      if (!item) return;
+      item.quantity += amount;
+      if (item.quantity <= 0) {
+        cart = cart.filter(item => item.cartKey !== cartKey);
+        if (!cart.length) {
+          discountApplied = false;
+          document.getElementById("discountApplied").classList.remove("show");
+          document.getElementById("discountCode").value = "";
+        }
+      }
+      renderCart();
     }
 
     function openCart() {
@@ -1676,17 +2631,15 @@
       checkoutModal.classList.remove("show");
       reviewModal.classList.remove("show");
       successModal.classList.remove("show");
+      productModal.classList.remove("show");
+      giftModal.classList.remove("show");
       overlay.classList.remove("show");
     }
 
     document.querySelectorAll(".category").forEach(button => {
       button.addEventListener("click", () => {
         currentCategory = button.dataset.category;
-
-        document.querySelectorAll(".category").forEach(btn => {
-          btn.classList.remove("active");
-        });
-
+        document.querySelectorAll(".category").forEach(btn => btn.classList.remove("active"));
         button.classList.add("active");
         renderMenu();
       });
@@ -1700,24 +2653,12 @@
 
     checkoutBtn.addEventListener("click", () => {
       if (!cart.length) return;
-
-      const status = isRestaurantOpen();
-      if (!status.open) {
-        updateClosedNotice();
-
-        const closedMsg = status.reason === "sunday"
-          ? "المطعم مغلق يوم الأحد. يرجى الطلب في باقي أيام الأسبوع."
-          : "المطعم مغلق الآن. مواعيد العمل: من 3 مساءً حتى 3 صباحاً.";
-
-        alert("🔒 " + closedMsg);
-        return;
-      }
-
       cartSidebar.classList.remove("open");
       checkoutModal.classList.add("show");
       overlay.classList.add("show");
     });
 
+    // ==================== Payment & Discounts ====================
     const paymentSelect = document.getElementById("payment");
     const vodafoneCashSection = document.getElementById("vodafoneCashSection");
     const whatsappBtn = document.getElementById("whatsappBtn");
@@ -1741,7 +2682,6 @@
     function updateVodafoneSection() {
       const finalTotal = getFinalTotal();
       vodafoneOrderTotal.textContent = finalTotal;
-
       const discountMsg = getDiscountAmount() > 0 ? ` (بعد خصم ${getDiscountAmount()} جنيه)` : "";
       const message = `مرحباً، لقد قمت بتحويل مبلغ ${finalTotal} جنيه لطلب من مطعم السلطان.${discountMsg} مرفق صورة التحويل.`;
       whatsappBtn.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
@@ -1762,38 +2702,23 @@
       const appliedBox = document.getElementById("discountApplied");
       const amountSpan = document.getElementById("discountAmount");
 
-      if (!isMonday()) {
-        alert("⚠️ كود الخصم متاح فقط يوم الاثنين.");
-        return;
-      }
-
-      if (!code) {
-        alert("⚠️ يرجى إدخال كود الخصم.");
-        return;
-      }
-
+      if (!isMonday()) { alert("⚠️ كود الخصم متاح فقط يوم الاثنين."); return; }
+      if (!code) { alert("⚠️ يرجى إدخال كود الخصم."); return; }
       if (total < MIN_ORDER_FOR_DISCOUNT) {
         alert(`⚠️ كود الخصم يعمل فقط على الطلبات بقيمة ${MIN_ORDER_FOR_DISCOUNT} جنيه أو أكثر.\nقيمة طلبك الحالي: ${total} جنيه`);
         return;
       }
-
-      if (code !== DISCOUNT_CODE) {
-        alert("❌ كود الخصم غير صحيح.");
-        return;
-      }
+      if (code !== DISCOUNT_CODE) { alert("❌ كود الخصم غير صحيح."); return; }
 
       discountApplied = true;
       const discountAmt = getDiscountAmount();
       amountSpan.textContent = `خصم ${DISCOUNT_PERCENTAGE}% = -${discountAmt} جنيه`;
       appliedBox.classList.add("show");
-
-      if (paymentSelect.value === "vodafone") {
-        updateVodafoneSection();
-      }
-
+      if (paymentSelect.value === "vodafone") updateVodafoneSection();
       alert(`✅ تم تطبيق خصم ${DISCOUNT_PERCENTAGE}% بنجاح!\nوفرت ${discountAmt} جنيه.`);
     });
 
+    // ==================== Review & Submit ====================
     function showReviewModal() {
       const total = getCartTotal();
       const discountAmt = getDiscountAmount();
@@ -1802,7 +2727,7 @@
       const reviewItems = document.getElementById("reviewItems");
       reviewItems.innerHTML = cart.map(item => `
         <div class="review-item">
-          <span class="name">${item.name}</span>
+          <span class="name">${item.displayTitle}</span>
           <span class="qty">×${item.quantity}</span>
           <span class="price">${item.price * item.quantity} جنيه</span>
         </div>
@@ -1830,7 +2755,6 @@
           <span>${total} جنيه</span>
         </div>
       `;
-
       if (discountAmt > 0) {
         totalsHtml += `
           <div class="line discount-line">
@@ -1839,7 +2763,6 @@
           </div>
         `;
       }
-
       totalsHtml += `
         <div class="line final-total">
           <span>الإجمالي النهائي</span>
@@ -1849,30 +2772,14 @@
           </span>
         </div>
       `;
-
       reviewTotals.innerHTML = totalsHtml;
-
       checkoutModal.classList.remove("show");
       reviewModal.classList.add("show");
     }
 
     document.getElementById("orderForm").addEventListener("submit", async event => {
       event.preventDefault();
-
-      if (!cart.length) {
-        alert("سلة الطلبات فارغة.");
-        return;
-      }
-
-      const status = isRestaurantOpen();
-      if (!status.open) {
-        updateClosedNotice();
-        const closedMsg = status.reason === "sunday"
-          ? "المطعم مغلق يوم الأحد."
-          : "المطعم مغلق الآن خارج أوقات العمل.";
-        alert("🔒 " + closedMsg);
-        return;
-      }
+      if (!cart.length) { alert("سلة الطلبات فارغة."); return; }
 
       const phoneInput = document.getElementById("phone");
       const phoneError = document.getElementById("phoneError");
@@ -1889,15 +2796,8 @@
       }
 
       const paymentMethod = paymentSelect.value;
-
-      if (!paymentMethod) {
-        alert("⚠️ يرجى اختيار طريقة الدفع.");
-        return;
-      }
-
-      if (paymentMethod === "vodafone") {
-        updateVodafoneSection();
-      }
+      if (!paymentMethod) { alert("⚠️ يرجى اختيار طريقة الدفع."); return; }
+      if (paymentMethod === "vodafone") updateVodafoneSection();
 
       const total = getCartTotal();
       const discountAmt = getDiscountAmount();
@@ -1911,7 +2811,7 @@
         notes: document.getElementById("notes").value.trim(),
         payment: paymentMethod === "vodafone" ? "Vodafone Cash" : "الدفع عند الاستلام",
         items: cart.map(item => ({
-          name: item.name,
+          name: item.displayTitle,
           price: item.price,
           quantity: item.quantity
         })),
@@ -1926,7 +2826,6 @@
 
     document.getElementById("confirmOrderBtn").addEventListener("click", async function() {
       if (!pendingOrderData) return;
-
       const btn = this;
       btn.disabled = true;
       btn.textContent = "جارٍ إرسال الطلب...";
@@ -1935,16 +2834,13 @@
         await fetch(GOOGLE_SHEET_URL, {
           method: "POST",
           mode: "no-cors",
-          headers: {
-            "Content-Type": "text/plain;charset=utf-8"
-          },
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
           body: JSON.stringify(pendingOrderData)
         });
 
         cart = [];
         discountApplied = false;
         renderCart();
-
         document.getElementById("orderForm").reset();
         vodafoneCashSection.classList.remove("show");
         document.getElementById("discountApplied").classList.remove("show");
@@ -1954,11 +2850,9 @@
         successModal.classList.add("show");
         overlay.classList.add("show");
         pendingOrderData = null;
-
       } catch (error) {
         alert("تعذر إرسال الطلب حالياً. يرجى المحاولة مرة أخرى.");
         console.error(error);
-
       } finally {
         btn.disabled = false;
         btn.textContent = "✅ تأكيد الطلب";
