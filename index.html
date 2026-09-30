@@ -183,7 +183,6 @@
       font-size: .75rem;
     }
 
-    /* ====== Gift Button ====== */
     .gift-btn {
       position: relative;
       width: 46px;
@@ -203,7 +202,6 @@
       transform: scale(1.1);
     }
 
-    /* أنيميشن التنطيط */
     .gift-btn.animate {
       animation: giftBounce 1.4s ease-in-out infinite;
     }
@@ -221,7 +219,6 @@
       opacity: .8;
     }
 
-    /* نجمة صغيرة فوق الهدية */
     .gift-btn.animate::after {
       content: "✨";
       position: absolute;
@@ -255,7 +252,6 @@
       50% { opacity: .3; transform: scale(.7) rotate(180deg); }
     }
 
-    /* ====== Gift Modal ====== */
     .gift-modal {
       text-align: center;
       background: linear-gradient(135deg, #fff5f9, #f5f0ff, #fff0e6);
@@ -415,7 +411,6 @@
       box-shadow: 0 8px 22px rgba(196, 77, 255, .5);
     }
 
-    /* Confetti Animation inside modal */
     .confetti {
       position: absolute;
       width: 10px;
@@ -897,7 +892,6 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* ====== Product Modal (Customization) ====== */
     .product-modal {
       padding: 0;
       max-height: 92vh;
@@ -1218,7 +1212,6 @@
       box-shadow: 0 8px 22px rgba(34, 139, 85, .4);
     }
 
-    /* ====== Vodafone Cash Section ====== */
     .vodafone-cash-section {
       display: none;
       background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
@@ -1355,7 +1348,6 @@
     .whatsapp-btn:hover { background: #128c7e; transform: translateY(-2px); }
     .whatsapp-btn svg { width: 24px; height: 24px; fill: white; }
 
-    /* ====== Discount Code Section ====== */
     .discount-section {
       display: none;
       background: linear-gradient(135deg, #fff8e1, #ffecb3);
@@ -1430,7 +1422,6 @@
     .discount-applied .amount { font-size: 1.1rem; color: #1b5e20; }
     body.dark .discount-applied .amount { color: #81c784; }
 
-    /* ====== Review Modal ====== */
     .review-section {
       background: #f9f5f0;
       border-radius: 12px;
@@ -1509,6 +1500,53 @@
       margin-right: 8px;
     }
 
+    .site-footer {
+      background: var(--dark);
+      color: var(--cream);
+      padding: 30px 20px;
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    body.dark .site-footer {
+      background: #0d0907;
+    }
+
+    .footer-content {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .footer-icons {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      margin-bottom: 15px;
+    }
+
+    .footer-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--red);
+      color: white;
+      display: grid;
+      place-items: center;
+      transition: transform .3s, background .3s;
+      text-decoration: none;
+    }
+
+    .footer-icon:hover {
+      transform: translateY(-3px) scale(1.1);
+      background: var(--orange);
+    }
+
+    .footer-copyright {
+      margin: 0;
+      font-size: .95rem;
+      color: rgba(255, 247, 233, .7);
+    }
+
     @media (max-width: 520px) {
       .hero { min-height: 245px; padding: 18px 17px 33px; }
       .welcome { margin-top: 37px; }
@@ -1542,6 +1580,9 @@
       .gift-modal h2 { font-size: 1.25rem; }
       .gift-code-box { font-size: 1.8rem; letter-spacing: 8px; padding: 14px 16px; }
       .have-fun { font-size: 1.35rem; }
+
+      .footer-icon { width: 45px; height: 45px; }
+      .footer-copyright { font-size: .85rem; }
     }
   </style>
 </head>
@@ -1562,7 +1603,6 @@
           <span class="icon-sun">☀️</span>
         </button>
 
-        <!-- زرار الهدية - يظهر يوم الاثنين فقط -->
         <button class="gift-btn" id="giftBtn" style="display:none" aria-label="هدية خاصة" title="🎁 هدية خاصة ليك!">
           🎁
         </button>
@@ -1631,11 +1671,9 @@
     </div>
   </aside>
 
-  <!-- Gift Modal -->
   <div class="modal gift-modal" id="giftModal">
     <button class="close-btn" id="closeGift" style="position:absolute; top:14px; left:14px; z-index:5">×</button>
 
-    <!-- Confetti elements -->
     <span class="confetti" style="left:10%; background:#ff6b9d; animation-delay:0s;">🎊</span>
     <span class="confetti" style="left:25%; background:#c44dff; animation-delay:.4s;">✨</span>
     <span class="confetti" style="left:40%; background:#ffb86c; animation-delay:.8s;">🎉</span>
@@ -1659,7 +1697,6 @@
     <button class="gift-close-btn" id="giftCloseBtn">شكراً! 🎊</button>
   </div>
 
-  <!-- Product Customization Modal -->
   <div class="modal product-modal" id="productModal">
     <div class="pm-image">
       <button class="pm-close-btn" id="pmCloseBtn" aria-label="إغلاق">×</button>
@@ -1736,7 +1773,6 @@
     </div>
   </div>
 
-  <!-- Checkout Modal -->
   <div class="modal" id="checkoutModal">
     <button class="close-btn" id="closeCheckout" style="position:absolute; top:14px; left:14px">×</button>
 
@@ -1808,7 +1844,6 @@
     </form>
   </div>
 
-  <!-- Review Modal -->
   <div class="modal" id="reviewModal">
     <button class="close-btn" id="closeReview" style="position:absolute; top:14px; left:14px">×</button>
 
@@ -1840,8 +1875,30 @@
     <button id="successClose">حسناً</button>
   </div>
 
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-icons">
+        <a href="https://wa.me/201204857565" target="_blank" rel="noopener" class="footer-icon" title="واتساب" aria-label="تواصل عبر واتساب">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+        </a>
+        <a href="tel:01204857565" class="footer-icon" title="اتصل بنا" aria-label="اتصل بنا">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+            <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+          </svg>
+        </a>
+        <a href="https://www.facebook.com/share/g/14yt7UeXpJC/" target="_blank" rel="noopener" class="footer-icon" title="فيسبوك" aria-label="صفحتنا على فيسبوك">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+          </svg>
+        </a>
+      </div>
+      <p class="footer-copyright">جميع الحقوق محفوظة لمطعم السلطان © 2026</p>
+    </div>
+  </footer>
+
   <script>
-    // ==================== Theme Toggle ====================
     const themeToggle = document.getElementById("themeToggle");
     const body = document.body;
     const savedTheme = localStorage.getItem("theme");
@@ -1852,7 +1909,6 @@
       localStorage.setItem("theme", body.classList.contains("dark") ? "dark" : "light");
     });
 
-    // ==================== Config ====================
     const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbygsDqIAiAiUeI7qFyQQTzqqgC3lPrilaxCg70OYtGddtwGR8YY-dc7gLh_lnWTdQg/exec";
     const WHATSAPP_NUMBER = "201204857565";
     const DISCOUNT_CODE = "5555";
@@ -1892,7 +1948,6 @@
       pepsiXLarge: "2.5.png"
     };
 
-    // ==================== Menu Data ====================
     const menu = {
       crepe: {
         title: "كريب السلطان",
@@ -2089,7 +2144,6 @@
     let currentCategory = "crepe";
     let cart = [];
 
-    // ==================== DOM Elements ====================
     const menuGrid = document.getElementById("menuGrid");
     const categoryTitle = document.getElementById("categoryTitle");
     const categoryDescription = document.getElementById("categoryDescription");
@@ -2106,19 +2160,17 @@
     const giftBtn = document.getElementById("giftBtn");
     const giftModal = document.getElementById("giftModal");
 
-    // ==================== Restaurant Status ====================
-   function isRestaurantOpen() {
-  const now = new Date();
-  const day = now.getDay();
-  const hours = now.getHours();
-  if (day === 0) return { open: false, reason: "sunday" };
-  if (hours >= 15 || hours < 3) return { open: true, reason: null };
-  return { open: false, reason: "time" };
-}
+    function isRestaurantOpen() {
+      const now = new Date();
+      const day = now.getDay();
+      const hours = now.getHours();
+      if (day === 0) return { open: false, reason: "sunday" };
+      if (hours >= 15 || hours < 3) return { open: true, reason: null };
+      return { open: false, reason: "time" };
+    }
 
     function isMonday() { return new Date().getDay() === 1; }
 
-    // ==================== Gift Button Logic ====================
     function getTodayKey() {
       const now = new Date();
       return `giftClicked_${now.getFullYear()}_${now.getMonth()}_${now.getDate()}`;
@@ -2127,8 +2179,6 @@
     function updateGiftVisibility() {
       if (isMonday()) {
         giftBtn.style.display = "grid";
-
-      
         const clickedKey = getTodayKey();
         if (localStorage.getItem(clickedKey) === "yes") {
           giftBtn.classList.remove("animate");
@@ -2144,8 +2194,6 @@
     giftBtn.addEventListener("click", () => {
       giftModal.classList.add("show");
       overlay.classList.add("show");
-
-     
       giftBtn.classList.remove("animate");
       localStorage.setItem(getTodayKey(), "yes");
     });
@@ -2160,7 +2208,6 @@
       overlay.classList.remove("show");
     });
 
-    // ==================== Discount Section ====================
     function updateDiscountSection() {
       const section = document.getElementById("discountSection");
       if (isMonday()) {
@@ -2197,7 +2244,6 @@
       updateGiftVisibility();
     }, 60000);
 
-    // ==================== Render Menu ====================
     function renderMenu() {
       const category = menu[currentCategory];
       categoryTitle.textContent = category.title;
@@ -2253,7 +2299,6 @@
       }
     }
 
-    // ==================== Product Modal ====================
     let currentProduct = null;
     let selectedSizeIndex = 0;
     let modalQuantity = 1;
@@ -2279,6 +2324,12 @@
       mixSection.style.display = "none";
       extrasSection.style.display = "none";
       drinksSection.style.display = "none";
+
+      sizesContainer.innerHTML = "";
+      extrasList.innerHTML = "";
+      drinksList.innerHTML = "";
+
+      document.getElementById("pmMixSelect").value = "";
 
       if (product.isDrinkSelector) {
         drinksSection.style.display = "";
@@ -2324,7 +2375,6 @@
 
         if (product.mixOptions) {
           mixSection.style.display = "";
-          document.getElementById("pmMixSelect").value = "";
         }
 
         if (product.extraCheese || product.hasExtras) {
@@ -2537,7 +2587,6 @@
       openCart();
     });
 
-    // ==================== Card Click Handler ====================
     menuGrid.addEventListener("click", (e) => {
       const card = e.target.closest(".food-card");
       if (!card) return;
@@ -2569,7 +2618,6 @@
       }
     });
 
-    // ==================== Cart ====================
     function renderCart() {
       const count = cart.reduce((sum, item) => sum + item.quantity, 0);
       const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -2658,7 +2706,6 @@
       overlay.classList.add("show");
     });
 
-    // ==================== Payment & Discounts ====================
     const paymentSelect = document.getElementById("payment");
     const vodafoneCashSection = document.getElementById("vodafoneCashSection");
     const whatsappBtn = document.getElementById("whatsappBtn");
@@ -2718,7 +2765,6 @@
       alert(`✅ تم تطبيق خصم ${DISCOUNT_PERCENTAGE}% بنجاح!\nوفرت ${discountAmt} جنيه.`);
     });
 
-    // ==================== Review & Submit ====================
     function showReviewModal() {
       const total = getCartTotal();
       const discountAmt = getDiscountAmount();
